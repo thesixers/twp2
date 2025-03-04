@@ -37,7 +37,7 @@ app.use(fileuploader({useTempFiles: true}));
 // if(!fs.existsSync('public/webtoonz')) fs.mkdirSync('public/webtoonz');
 
 
-app.get('*', tokenChecker)
+// app.get('*', tokenChecker)
 // Routes
 app.get('/', (req,res)=>{ res.redirect('/twp') });
 
