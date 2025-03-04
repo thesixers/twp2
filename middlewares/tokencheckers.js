@@ -95,7 +95,7 @@ export async function dltEp(ep){
 export function tokenChecker(req,res,next){
     let token = req.cookies.twpAccount;
     if(!token){
-      return res.locals.user = {};
+      return res.locals.user = null;
     };
     if(token){
         jwt.verify(token,JWT_SECRET, async (err, decodedToken) => {
