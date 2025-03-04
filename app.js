@@ -3,7 +3,7 @@ import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
 import fileuploader from 'express-fileupload';
 // import authRoute from './routes/authRoutes.js'
-// import otherRoute from './routes/otherRoutes.js';
+import otherRoute from './routes/otherRoutes.js';
 // import adminRoute from './routes/adminRoutes.js';
 import { tokenChecker } from './middlewares/tokencheckers.js';
 // import toonRoute from "./routes/toonRoutes.js"
