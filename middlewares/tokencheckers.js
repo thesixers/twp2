@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import User from '../model/users.js';
 import uploadFileToFtp, { deleteFileFromFtp } from './ftpupload.js';
+import { config } from 'dotenv';
+config()
 
 let { JWT_SECRET } = process.env;
 
