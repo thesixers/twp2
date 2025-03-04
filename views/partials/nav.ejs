@@ -1,0 +1,77 @@
+<section class="nav">
+    <div class="left">
+        <div class="logo"><a href="/twp"><img src="/images/twp_logo-removebg-preview.png" alt=""> </a></div>
+    </div>
+    <div class="right laptop">
+        <ul>
+            <li class="b"><a href="/twp">Home</a></li>
+            <li class="genre-cover b">
+                <a href="/twp/webtoon?type=all">WebToonz</a>
+            </li>
+            <li class="b"><a href="/twp/webtoon?type=twporiginal">TWP-Original</a></li>
+            <li class="b"><a href="/twp/aboutus#about">About Us</a> </li>
+            <li class="b"><a href="/twp/aboutus#contact">Contact Us</a> </li>
+            <% if (user) { %>
+                <% if(user.type === 'admin1' || user.type === 'admin2') {%>
+                    <li class="b"><a href="/twp/admin">Admin Panel</a></li>
+                <% }else{ %>
+                    <% if(user.isAuthor){ %>
+                        <li class="b"><a href="/twp/author">Authors Page</a></li>
+                    <% } %>    
+                <% } %>
+            <% } %>
+            <% if(!user) {%>
+                <li class="btn"><a href="/twp/auth/login">Login</a></li>
+                <li class="btn"><a href="/twp/auth/signup">Signup</a></li>
+             <% }else{ %>
+                <div class="profile">
+                    <div class="acc-image">
+                        <img src="/images/Coffee___Jesus____pfp_-removebg-preview.png" alt="kkkk">
+                    </div>
+                    <div class="text">
+                        <%= user.name.split(' ')[0].split('')[0] %><%= user.name.split(' ')[1].split('')[0] %>
+                    </div>
+                </div>
+                <li class="btn"><a href="/twp/auth/logout">logout</a></li>
+             <% } %> 
+        </ul>
+        
+    </div>
+    <div class="right mobile-btn">
+    <div>
+            <% if(user){ %>
+                <div class="profile">
+                    <div class="acc-image">
+                        <img src="/images/Coffee___Jesus____pfp_-removebg-preview.png" alt="">
+                    </div>
+                    <div class="text">
+                        <%= user.name.split(' ')[0].split('')[0] %><%= user.name.split(' ')[1].split('')[0] %>
+                    </div>
+                </div>
+            <% } %>    
+    </div>
+        <div class="sm out"><div class="btn"></div></div>
+    </div>
+    <div class="right mobile">
+        <div class="sm in"><div class="btn"></div></div>
+        <div class="menu"><a href="/twp">Home</a></div>
+        <div class="menu genre-mobile"><a href="/twp/webtoon?type=all">WebToonz</a></div>
+        <div class="menu"><a href="/twp/webtoon?type=twporiginal">TWP-Original</a></div>
+        <div class="menu"><a href="/twp/aboutus#about">About Us</a> </div>
+        <div class="menu"><a href="/twp/aboutus#contact">Contact Us</a></div>
+        <% if(user){ %>
+            <% if(user.type === 'admin1' || user.type === 'admin2') {%>
+                <div class="menu"><a href="/twp/admin">Admin Panel</a></div>
+            <% }else{ %>
+                <% if(user.isAuthor){ %>
+                    <div class="menu"><a href="/twp/author">Authors Page</a></div>
+                <% } %>    
+            <% } %>
+            <div class="menu"><a href="/twp/auth/logout">Logout</a></div>
+        <% } else { %>
+            <div class="menu"><a href="/twp/auth/login">Login</a></div>
+            <div class="menu"><a href="/twp/auth/signup">Signup</a></div>  
+        <% } %>
+
+    </div>
+</section>

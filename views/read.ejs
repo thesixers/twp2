@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./partials/metatags.ejs') %>
+    <title>Twp | Read page</title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <style>
+        .horizontal{
+            display: none;
+            background-color: var(--orange--);
+        }
+        .vertical{
+            background-color: var(--orange--);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .vertical .ep,
+        .horizontal .ep{
+            overflow: hidden;
+            margin: auto;
+            height: 500px;
+            width: 500px;
+        }
+        .ep img{
+            width: 100%;
+            height: 100%;
+        }
+        .aside .left{
+            width: 240px;
+            display: flex;
+            padding: 5px;
+            gap: 5px;
+        }
+        .aside select{
+            padding: 5px;
+            border: 1px solid var(--orange--);
+            outline: none;
+            height: 30px;
+            cursor: pointer;
+            margin-top: -5px;
+            border-radius: 20px;
+        }
+        .aside select option{
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
+             
+            &:hover{
+                background-color: #ffcfc1;
+            }
+        }
+        .detail{
+            max-width: 590px;
+            margin: auto;
+            padding: 5px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .detail .prev,
+        .detail .next{
+            width: 100px;
+            height: 30px;
+            border: 1px dotted var(--plain--);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #000;
+            background-color: var(--plain--);
+            transition: 140ms ease-in;
+            border-radius: 20px;
+
+            &:hover{
+                box-shadow: 0px 0px 0px 3px var(--light-o--);
+            }
+        }
+        .detail .it{
+            width: 50px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--plain--);
+        }
+        .epPic-R{
+            animation-name: rotate;
+            animation-duration: .3s;
+            animation-timing-function: ease-in-out;
+            animation-play-state: running;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(180deg);
+            }
+        }
+        .epPic-RR{
+            animation-name: back;
+            animation-duration: .3s;
+            animation-timing-function: ease-in-out;
+            animation-play-state: running;
+        }
+        @keyframes back{
+            from {
+                transform: rotateY(180deg);
+            }
+            to {
+                transform: rotateY(0deg);
+            }
+        }
+        @media (max-width: 450px) {
+            .vertical .ep,
+            .horizontal .ep{
+                width: 380px;
+            }
+        }
+        .aside{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .view-toon a{
+            color: #e44616;
+            text-decoration: none;
+        }
+        .view-toon a:hover{
+            text-decoration: underline;
+        }
+        @media (max-width: 520px) {
+            .vertical .ep,
+            .horizontal .ep{
+                width: 100%;
+            }
+        }
+    </style>
+</head>     
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/preloader.ejs') %>
+    <section class="aside">
+        <div class="left">
+            <div class="txt">Read mode:</div>
+            <select name="readmode" id="readmode" onchange="selectMode()">
+            <option value="vertical">Vertical</option>
+            <option value="horizontal">Horizontal</option>
+            </select>
+        </div>
+
+        <div class="view-toon"><a href="/twp/webtoon/<%= toon?.id %>">View Webtoon</a></div>
+    </section>
+
+    <section class="vertical">
+        <% if(pg) {%>
+            <% pg.forEach(p => { %>
+                <div class="ep"><img src="<%= p %>" alt=""></div>
+            <% }); %>
+        <% }else {%>
+                <div class="ep">Nothing to show</div>
+        <% } %>    
+    </section>
+
+    <section class="horizontal">
+        <div class="ep"><img src="" class="epPic" alt=""></div>
+        <div class="detail">
+            <div class="prev" onclick="prev()">Previous</div>
+            <div class="it page-no">Page 1</div>
+            <div class="next" onclick="next()">Next</div>
+        </div>
+    </section>
+
+    
+
+    <%- include('./partials/footer.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script>
+        let comic = <%- JSON.stringify(pg) %>;
+    </script>
+    <script src="/js/read.js"></script>
+</body>
+</html>

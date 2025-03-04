@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./partials/metatags.ejs') %>
+    <title>TWP | <%= title %></title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Webtoons - The Webtoon Project",
+          "description": "Browse through a vast collection of engaging webtoons and comics on The Webtoon Project. Discover captivating stories and beautiful artwork.",
+          "url": "https://thewebtoonproject.com/twp/webtoonz"
+        }
+        </script>
+        
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <section class="main">
+        <div class="genre-wrapper">
+            <div class="genre"><%= title %></div>
+            <div class="search"><input type="text" class="search-bar">
+                <div class="S-icon" onclick="search()">
+                <span class="material-symbols-outlined">
+                search
+                </span>
+            </div>
+            </div>
+            <div class="list-filters">
+                <div class="filter-two">select</div>
+                <div class="r-values type">
+                    <div class="values">Chapters<input type="radio" onclick="show('chapters')"  name="ty" value="popular"></div>
+                    <div class="values">Toonz<input type="radio" onclick="show('series')" name="ty" value="latest"></div>
+                </div>
+                <div class="filter-three">Genres</div>
+                <div class="r-values genrez">
+                    <div class="values">All <input type="radio" onclick="genre('all')" name="genre-s" value="all"></div>
+                    <div class="values">Thriller <input type="radio" onclick="genre('thriller')" name="genre-s" value="thriller"></div>
+                    <div class="values">Romance <input type="radio" onclick="genre('romance')" name="genre-s" value="romance"></div>
+                    <div class="values">Comedy <input type="radio" onclick="genre('comedy')" name="genre-s" value="comedy"></div>
+                    <div class="values">Supernatural <input type="radio" onclick="genre('supernatural')" name="genre-s" value="supernatural"></div>
+                    <div class="values">Sci-fi <input type="radio" onclick="genre('scifi')" name="genre-s" value="scifi"></div>
+                    <div class="values">Horror <input type="radio" onclick="genre('horror')" name="genre-s" value="miniservice"></div>
+                </div>  
+                
+            </div>
+        </div>
+        <div class="cards">
+           <!-- toonz space -->
+        </div>
+    </section>
+
+    <%- include('./partials/preloader.ejs') %>
+    
+
+    <%- include('./partials/footer.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+   <script src="/js/landing.js"></script>
+   <script>
+        const webToonz = <%- JSON.stringify(toonz) %>;
+        const Episodes = <%- JSON.stringify(episodes) %>;
+        let display = '<%= display %>';
+   </script>
+    <script src="/js/list.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twp Signup page</title>
+    <%- include('./partials/metatags.ejs') %>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Sign Up - The Webtoon Project",
+          "description": "Join The Webtoon Project to explore an incredible collection of webtoons and comics. Create an account and start your journey today!",
+          "url": "https://thewebtoonproject.com/twp/auth/signup"
+        }
+        </script>
+        
+        
+</head>     
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/preloader.ejs') %>
+    <section class="auth-body">
+        <div class="mini m-signup">
+            <div class="mini-signup">
+                <div class="evry">
+                    <div class="heading">Create Account</div>
+                </div>
+                <form action="" id="signup" class="mobile-signup-form">
+                    <div class="err-mess mobile-signup-err"></div>
+                    <input type="text" name="name" class="name" placeholder="Name" required>
+                    <input type="text" name="email" class="email" placeholder="Email" required>
+                    <div class="pass-input-container"><input type="password" name="password" class="password" placeholder="Password" required><span class="material-symbols-outlined pass-icon" onclick="show_Pass()">
+                        password_2
+                        </span>
+                    </div>
+                    <div class="pass-input-container dob-container">
+                        <label>D.O.B</label>
+                        <input type="date" name="dob" class="dob" required>
+                    </div>
+                    <button>Sign Up</button>
+                    <div class="tandc-wrapper"><input type="checkbox" name="terms" id="terms"> <span class="terms-agree" onclick="showTerms()">I have read and agree to the Terms&Conditions.</span></div>
+                    <div class="sign-link-title">already have an account? <a href="/twp/auth/login" class="signupLink links" onclick="toggleForms()">Sign in</a></div> 
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <%- include('./partials/popmessage.ejs') %>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <%- include('./partials/terms.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script src="/js/signup.js"> </script>
+</body>
+</html>

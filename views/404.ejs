@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWP | <%= title %></title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <section class="main-404">
+        <div class="title">404 <div class="err">Error</div></div>
+        <div class="message">Page /Series /Episode not found</div>
+        <div class="btn"><a href="/twp"><button>Home</button></a> <a href="#"><button onclick="goBack()"> &pr; Back</button></a></div>
+    </section>
+
+    <%- include('./partials/preloader.ejs') %>
+    
+    <%- include('./partials/footer.ejs') %>
+ 
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script>
+        function goBack(){
+            window.history.back()
+        }
+    </script>
+</body>
+</html>

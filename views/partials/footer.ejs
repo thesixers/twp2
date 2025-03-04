@@ -1,0 +1,14 @@
+
+<section class="footer">
+    <hr class="footer-hr">
+    <div class="socials">
+        <div class="fb"><a href="https://www.facebook.com/profile.php?id=61566147569804&mibextid=JRoKGi" target="_blank"><img src="/images/facebook.png" alt="fb"></a></div>
+        <div class="fb"><a href="https://www.instagram.com/the_webtoon_project?igsh=YzRhcGtwMnY4OWQ4" target="_blank"><img src="/images/instagram.png" alt="iG"></a></div>
+    </div>
+    <% if (user) { %>
+        <% if (!user.isAuthor && user.type === 'regular') { %>
+            <div class="copyrite"><a href="/twp/webtoon/upload" class="author-url">Become an author</a></div>
+        <% } %>
+    <% } %>
+    <div class="copyrite">&copy;thewebtoonproject 2024</div>
+</section>

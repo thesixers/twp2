@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./partials/metatags.ejs') %>
+    <title>TWP | Login Page</title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Log In - The Webtoon Project",
+          "description": "Log in to your account on The Webtoon Project to access your favorite webtoons and comics. Stay updated with the latest releases!",
+          "url": "https://thewebtoonproject.com/twp/auth/login"
+        }
+        </script>
+        
+</head>     
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/preloader.ejs') %>
+    <section class="auth-body">
+        <div class="mini m-login">
+            <div class="mini-login">
+                <div class="evry">
+                    <div class="heading">Login</div>
+                </div>
+                <form action="" id="login" class="mobile-login-form">
+                    <di class="err-mess mobile-login-err"></di>
+                    <br>
+                    <input type="text" name="email" class="email" placeholder="Email">
+                    <br>
+                    <div class="pass-input-container"><input type="password" name="password" class="password" placeholder="Password" required><span class="material-symbols-outlined pass-icon" onclick="show_Pass()">
+                        password_2
+                        </span></div>
+                        <br>
+                    <button>Sign In</button>
+                    <br>
+                    <div class="sign-link-title">don't have an account? <a href="/twp/auth/signup" class="signupLink links">Signup</a></div>
+                    <div class="sign-link-title">forgotten password? <a href="/twp/auth/forgotpassword" class="signupLink links">reset it</a></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <%- include('./partials/popmessage.ejs') %>
+    
+    
+    <%- include('./partials/footer.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script src="/js/login.js"> </script>
+</body>
+</html>

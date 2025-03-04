@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8750030611044948"
+     crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/landing.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+  <title>TWP | <%= title %></title>
+</head>
+<body class="bg-white text-orange-600 font-sans">
+
+  <!-- Navbar -->
+  <%- include('./partials/nav.ejs') %>
+
+  <!-- About Us Section -->
+  <section id="about" class="about-section">
+    <div class="text-center">
+      <div class="about-title">About Us</div>
+    </div>
+    <div class="about-content">
+      <div class="about-item">
+        <h2 class="about-heading">Who We Are</h2>
+        <p class="about-text">
+          TWP is a global media brand built to create a platform for Christian webtoon creators to express their talents 
+          to the world while entertaining and inspiring webtoon fans at little or no cost.
+        </p>
+      </div>
+      <div class="about-item">
+        <h2 class="about-heading">Our Vision</h2>
+        <p class="about-text">
+          To inspire and enlighten teens and young adults all over the globe with God-inspired webtoons and stories.
+        </p>
+      </div>
+      <div class="about-item">
+        <h2 class="about-heading">Our Mission</h2>
+        <p class="about-text">
+          To reach out to at least 25 million teens and young adults all over the globe with God-inspired webtoons and stories.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Us Section -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2 class="contact-title">Contact Us</h2>
+      <div class="contact-info">
+        <p class="contact-description">
+          Got a complaint? Need help?
+        </p>
+        <p class="contact-email">
+          Contact us at: <a href="mailto:thewebtoonproject@gmail.com" class="contact-link">thewebtoonproject@gmail.com</a>
+        </p>
+      </div>
+      <div class="contact-form">
+        <h3 class="contact-form-title">Send Us a Message</h3>
+        <form id="contactForm" class="contact-form-fields">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" class="form-input" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="form-submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  
+
+  <!-- Footer -->
+  <%- include('./partials/popmessage.ejs') %>
+
+  <%- include('./partials/footer.ejs') %>
+
+  <script src="/js/landing.js"></script>
+  <script>
+    // Contact Form Submission Handler
+    document.getElementById('contactForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      let message = new FormData(this);
+
+      try {
+        let res = await fetch('/twp/complain', {
+          method: 'POST',
+          body: message,
+        });
+
+        const data = await res.json();
+        let {E,M} = data;
+
+        if(E) throw new Error(E);
+        
+        
+      } catch (err) {
+        console.log(err.message);
+      }
+      finally{
+        alert('Your message has been sent! Thank you for contacting us.');
+        this.reset();
+      }
+    });
+  </script>
+
+</body>
+</html>

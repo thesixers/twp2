@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWP | <%= title %></title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8750030611044948"
+     crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    
+    <section class="admin">
+        <div class="admin-nav">
+            <div class="nav-item">Admin</div>
+        </div>
+        <div class="sub-menu">
+            <div class="submenu-item db-sub" onclick="changeMount('dashboard')"><span class="material-symbols-outlined">
+                dashboard
+                </span></div>
+            <div class="submenu-item wt-sub" onclick="changeMount('webtoon')"><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                fill="currentColor"
+                class="webtoon-icon"
+                style="width: 30px; height: 30px; margin-top: 3px;">
+                <!-- Speech bubble shape -->
+                <path d="M10 10h80v60H50l-15 15v-15H10V10z" />
+                <!-- 'W' letter for Webtoons -->
+                <text x="50%" y="55%" text-anchor="middle" fill="white" font-size="30px" font-family="Arial, sans-serif" font-weight="bold">WT</text>
+              </svg>
+              </div>
+            <div class="submenu-item u-sub" onclick="changeMount('users')"><span class="material-symbols-outlined">
+                group
+                </span></div>
+            <div class="submenu-item ms-sub" onclick="changeMount('message')"><span class="material-symbols-outlined">
+                mail
+                </span></div>
+        </div>
+        <div class="dashboard-wrapper">
+            <div class="box">
+                <a href="">
+                    <div class="head">Published webtoonz</div>
+                    <div class="count">
+                        <% 
+                            let Ftoonz = toonz.filter((toon) => { if(toon.status === 'approved'){ return true}})
+                        %>
+                        <%= Ftoonz.length %>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="">
+                    <div class="head">Users</div>
+                    <div class="count">
+                        <%= users.length %>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="">
+                    <div class="head">Pending webtoonz</div>
+                    <div class="count">
+                        <% let fToonz = toonz.filter(toon => toon.status === 'pending' ); %>
+                        <%= fToonz.length %>
+                    </div>
+                </a>
+            </div>
+            <div class="box">
+                <a href="">
+                    <div class="head">Rejected webtoonz</div>
+                    <div class="count">
+                        <% let Rtoonz = toonz.filter(toon => { if(toon.status === 'rejected'){ return true} }); %>
+                        <%= Rtoonz.length %>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <%- include('./adminparts/scriptureform.ejs') %>
+
+        <%- include('./adminparts/messages.ejs') %>
+
+        <%- include('./adminparts/webtoonz.ejs') %>
+
+        <%- include('./adminparts/users.ejs') %>
+
+        <%- include('./partials/popmessage.ejs') %>
+    </section>
+    
+
+    <%- include('./partials/footer.ejs') %>
+
+    <%- include('./partials/preloader.ejs') %>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script>
+        let isLoading = false;
+    </script>
+    <script src="/js/adminpanel.js"></script>
+</body>
+</html>

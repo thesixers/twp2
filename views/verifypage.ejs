@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWP | <%= title %></title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <style>
+        .pop-message{
+        display: block !important;
+    }
+    </style>
+</head>     
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/preloader.ejs') %>
+    <section class="pop-message">
+        <div class="message-box">
+            <div class="tick-wrapper">
+                <div class="tick">&check;</div>
+            </div>
+            <div class="meassage-head">Success!!</div>
+            <div class="message p-message"><%= M %></div>
+            <div class="message-btn-wrapper">
+                <button class="message-btn" onclick="closeMessage()">Ok</button>
+            </div>
+        </div>
+    </section>
+    
+    
+    <%- include('./partials/footer.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+    <script>
+        const popMessage = document.querySelector('.pop-message');
+
+        function closeMessage(){
+            location.assign('/twp')
+        }        
+    </script>
+</body>
+</html>

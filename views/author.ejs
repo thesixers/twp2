@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWP | Authors page</title>
+    <link rel="stylesheet" href="/css/landing.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <%- include('./partials/preloader.ejs') %>
+    <section class="author">
+        <div class="author-nav">
+            <div class="nav-item">MY WebToonz</div>
+            <a href="/twp/webtoon/upload" class="author-upload-btn">New Webtoon <span>+</span></a>
+        </div>
+        <div class="cards">  
+            <% if(toonz) {%> 
+                <% toonz.forEach(toon => { %>
+                    <div class="card">
+                        <a href="/twp/webtoonz/<%= toon.id %>">
+                            <div class="img"><img src="<%= toon.coverImage %>" alt=""></div>
+                            <div class="text"><%= toon.title %> <div><%= toon.status %></div></div>
+                        </a>
+                    </div>
+                <% }); %>
+            <% }%> 
+        </div>
+    </section>
+    
+
+    <%- include('./partials/footer.ejs') %>
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="/js/landing.js"></script>
+   
+</body>
+</html>
