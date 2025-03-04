@@ -3,9 +3,9 @@ import { connect } from 'mongoose';
 import cookieParser from 'cookie-parser';
 import fileuploader from 'express-fileupload';
 // import authRoute from './routes/authRoutes.js'
-import otherRoute from './routes/otherRoutes.js';
+// import otherRoute from './routes/otherRoutes.js';
 // import adminRoute from './routes/adminRoutes.js';
-import { tokenChecker } from './middlewares/tokencheckers.js';
+// import { tokenChecker } from './middlewares/tokencheckers.js';
 // import toonRoute from "./routes/toonRoutes.js"
 import { config } from 'dotenv';
 config()
@@ -19,9 +19,6 @@ const port = PORT || 3001;
 connect(MONGO_URI)     
 .then(() => { 
     console.log('MongoDB connected');
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    }); 
 }).catch(err => {
     console.log('MongoDB connection error: ', err.message);
 
@@ -40,11 +37,11 @@ app.use(fileuploader({useTempFiles: true}));
 // if(!fs.existsSync('public/webtoonz')) fs.mkdirSync('public/webtoonz');
 
 
-app.get('*', tokenChecker)
+// app.get('*', tokenChecker)
 // Routes
 // app.get('/', (req,res)=>{ res.redirect('/twp') });
 
-app.use('/twp', otherRoute);
+// app.use('/twp', otherRoute);
 
 // app.use('/twp/webtoon', toonRoute)
 
@@ -55,3 +52,7 @@ app.use('/twp', otherRoute);
 app.use((req,res) => { 
     res.render('404', {user: res.locals.user, title: '404 Page'}) 
 })
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+}); 
