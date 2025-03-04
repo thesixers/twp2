@@ -5,7 +5,7 @@ import fileuploader from 'express-fileupload';
 // import authRoute from './routes/authRoutes.js'
 // import otherRoute from './routes/otherRoutes.js';
 // import adminRoute from './routes/adminRoutes.js';
-// import { tokenChecker } from './middlewares/tokencheckers.js';
+import { tokenChecker } from './middlewares/tokencheckers.js';
 // import toonRoute from "./routes/toonRoutes.js"
 import { config } from 'dotenv';
 config()
@@ -37,9 +37,9 @@ app.use(fileuploader({useTempFiles: true}));
 // if(!fs.existsSync('public/webtoonz')) fs.mkdirSync('public/webtoonz');
 
 
-// app.get('*', tokenChecker)
+app.get('*', tokenChecker)
 // Routes
-app.get('/', (req,res)=>{ res.redirect('/twp') });
+// app.get('/', (req,res)=>{ res.redirect('/twp') });
 
 app.use('/twp', otherRoute);
 
@@ -49,13 +49,8 @@ app.use('/twp', otherRoute);
 
 // app.use('/twp/admin', adminRoute);
 
-app.use((req,res,next) => { 
-    res.locals.user;
-    if(typeof res.locals.user === 'undefined'){ 
-        res.locals.user = {};  
-    }
-    res.render('404', {user: res.locals.user, title: '404 Page'})
-    next()  
+app.use((req,res) => { 
+    res.render('404', {user: res.locals.user, title: '404 Page'}) 
 })
 
 app.listen(port, () => {
