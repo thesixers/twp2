@@ -5,7 +5,7 @@ import {
     home_get,
     slash_get, 
     aboutus_get,
-    complaint_post,
+    complaint_post
 } from '../controllers/otherController.js';
 
 const router = express.Router();
