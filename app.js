@@ -19,6 +19,9 @@ const port = PORT || 3001;
 connect(MONGO_URI)     
 .then(() => { 
     console.log('MongoDB connected');
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    }); 
 }).catch(err => {
     console.log('MongoDB connection error: ', err.message);
 
@@ -52,7 +55,3 @@ app.use('/twp', otherRoute);
 app.use((req,res) => { 
     res.render('404', {user: res.locals.user, title: '404 Page'}) 
 })
-
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-}); 
