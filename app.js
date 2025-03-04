@@ -6,7 +6,7 @@ import authRoute from './routes/authRoutes.js'
 import otherRoute from './routes/otherRoutes.js';
 import adminRoute from './routes/adminRoutes.js';
 import { tokenChecker } from './middlewares/tokencheckers.js';
-import toonRoute from "./routes/toonRoutes.js"
+// import toonRoute from "./routes/toonRoutes.js"
 
 const app= express();
 
@@ -41,7 +41,7 @@ app.get('/', (req,res)=>{ res.redirect('/twp') });
 
 app.use('/twp', otherRoute);
 
-app.use('/twp/webtoon', toonRoute)
+// app.use('/twp/webtoon', toonRoute)
 
 app.use('/twp/auth', authRoute);
 
