@@ -1,15 +1,22 @@
 import jwt from 'jsonwebtoken';
 import User from '../model/users.js';
+import env from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import Toonz from '../model/webtoonz.js';
+import ftp from "basic-ftp"
 import uploadFileToFtp, { deleteFileFromFtp } from './ftpupload.js';
-import { config } from 'dotenv';
-config()
 
-let { JWT_SECRET } = process.env;
+env.config();
+
+let {JWT_SECRET} = process.env;
+
 
 export const createJwt = (id) => {
     const time = 1 * 24 * 60 * 60;
     return jwt.sign({id}, JWT_SECRET, {expiresIn: time});
 }
+
 
 export const errHandler = (err) => {
     let errs = { name: '', email: '', password: ''};
@@ -62,27 +69,31 @@ export async function localSeriesUpload(file,title){
 
 export async function uploadEp(files,filename,eptitle,res){
     const  uploads = {coverImage: '', pages: []}
+    const filesArray = Object.values(files);
+    let epCoverImg = filesArray.slice(0,1);
+    let epPages = filesArray.slice(1);
+    if(!epCoverImg || epCoverImg === 0) res.status(400).json({E: 'Episode must have aleast 4 pages'});
+    if(!epPages || epPages > 4) res.status(400).json({E: 'Episode must have aleast 4 pages'});
+    let mimetype = epCoverImg[0].mimetype.split('/')[1];
+    
     let epFolder =  `/webtoonz/${filename}/${eptitle}`; 
 
-    let epCoverImg = files['epcover']
-    if(!epCoverImg) res.status(400).json({E: 'Episode must have a cover image'});
-    let mimetype = epCoverImg.mimetype.split('/')[1];
+    let coverUrl = await uploadFileToFtp(epCoverImg[0], epFolder, `coverImage.${mimetype}`)
 
-    let epPages = Object.entries(files)
-    .filter(([key]) => key.includes('page') )
-    .map(([_,value]) => value)
-    .forEach((page, index) => {
+    if(coverUrl.includes('Error uploading file to FTP server')) res.status(500).json({E: 'file upload failed pls retry'});
+
+    uploads.coverImage = coverUrl;
+    for(const page of epPages) {
+        let index = epPages.indexOf(page)
         const mimetype = page.mimetype.split('/')[1];
         const pgFolder =  `/webtoonz/${filename}/${eptitle}/pages`;
+    
         uploads.pages.push({url: `${pgFolder}/pg${index + 1}.${mimetype}`, temp: page.tempFilePath});
-    });
-    if(epPages.length < 3) res.status(400).json({E: 'Episode must have aleast 3 pages'});
-
-    uploads.coverImage = await uploadFileToFtp(epCoverImg, epFolder, `coverImage.${mimetype}`)
-    if(uploads['coverImage'].toString().includes('Error')) res.status(500).json({E: 'file upload failed pls retry'});
-
-    uploads.pages = await uploadFileToFtp('', `${epFolder}/pages`, uploads.pages)
-    if(uploads["pages"].includes('Error uploading file to FTP server')) res.status(500).json({E: 'file upload failed pls retry'});
+    }
+    
+    let pageUrlArr = await uploadFileToFtp('', `${epFolder}/pages`, uploads.pages)
+    if(pageUrlArr.includes('Error uploading file to FTP server')) res.status(500).json({E: 'file upload failed pls retry'});
+    uploads.pages = pageUrlArr
     return uploads;
 }
 
@@ -91,13 +102,36 @@ export async function dltEp(ep){
     let stringArr = coverLink.split('/').slice(3, 6)
     let joinPath = `/${stringArr[0]}/${stringArr[1]}/${stringArr[2]}`
 
-   await deleteFileFromFtp(joinPath)
+   await deleteFileFromFtp(path)
+}
+
+export async function checkAccont(req,res){
+    let token = req.cookies.twpAccount;
+    let u = {id: '', type: ''}
+    if(!token) return false;
+
+    let decodedToken = await jwt.verify(token,JWT_SECRET);
+    if(!decodedToken) return false;
+
+    let user = await User.findById(decodedToken.id);
+        if(user.status === 'banned' || user.status === 'disabled') return false;
+        if(user.type === 'admin1' || user.type === 'admin2'){
+            u.id = user.id;
+            u.type = 'admin';
+        };
+        if(user.type === 'regular'){
+            u.id = user.id;
+            u.type = 'regular';
+        };
+
+        return u
 }
 
 export function tokenChecker(req,res,next){
     let token = req.cookies.twpAccount;
     if(!token){
-      return res.locals.user = null;
+        res.locals.user = null;
+        next()
     };
     if(token){
         jwt.verify(token,JWT_SECRET, async (err, decodedToken) => {
@@ -113,6 +147,81 @@ export function tokenChecker(req,res,next){
             }
         });
     } 
+}
+ 
+export function pageAuth(req,res,next){
+    let token = req.cookies.twpAccount;
+    if(!token){
+        res.redirect('/twp');
+        next()
+    };
+    if(token){
+        jwt.verify(token,JWT_SECRET, async (err, decodedToken) => {
+            if(err){
+                res.redirect('/twp');
+                next()
+            }else{
+                let user = await User.findById(decodedToken.id);
+                if(!user) res.redirect('/twp');
+               next()
+            }
+        });
+    } 
+}
+
+export function routeAuth(req,res,next){
+    let token = req.cookies.twpAccount;
+    if(!token){
+        res.status(400).send('u dont acces to this functionality');
+    };
+    if(token){
+        jwt.verify(token,JWT_SECRET, async (err, decodedToken) => {
+            if(err){
+                res.status(400).send('u dont acces to this functionality');
+            }
+            next()
+        });
+    } 
+}
+
+export function authenticateAdmin(req,res,next){
+    let token = req.cookies.twpAccount;
+    if(!token){
+        return res.redirect('/twp/auth/login')
+    }
+
+    jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
+        if(err) {
+           return res.redirect('/twp/auth/login')
+        }
+        let user = await User.findById(decodedToken.id);
+
+        if(user === null) return res.redirect('/twp/auth/login')
+
+        if(user?.type === 'regular') return res.redirect('/twp/auth/login')
+    })
+
+    next()
+}
+
+export function authAuthor(req,res, next){
+    let token = req.cookies.twpAccount;
+    if(!token) return res.redirect('/twp');
+
+    jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
+        if(err) return res.redirect('/twp');
+
+        let user = await User.findById(decodedToken.id)
+        if(!user) return res.redirect('/twp');
+        let toonz = await Toonz.find({uploadAcc: decodedToken.id})
+        toonz = toonz ? toonz : null;
+
+        if(!user.isAuthor) return res.redirect('/twp');
+
+        res.locals.author = {toonz};
+        next()
+    })
+    return;
 }
 
 export function calculateAge(dob){
@@ -135,38 +244,4 @@ export function calculateAge(dob){
        months = calcMonth < 0 ? 12 + calcMonth : 12 - calcMonth;
 
     return [age, months];
-}
-
-/*this is a fresh script for the new twp server middleware*/
-export function authRoute(req,res,next){
-    let token = req.cookies.twpAccount
-    if(!token) return res.sendStatus(403);
-
-    jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
-        if(err) return res.sendStatus(403);
-        let user = await User.findById(decodedToken.id)
-        if(user.status === 'banned'){
-            res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
-            return res.status(403).json({E: 'ur account has been banned'})
-        }
-        req.user = {id: user.id, type: user.type}
-        next()
-    })
-}
-
-export function authPage(req,res,next){
-    let token = req.cookies.twpAccount
-    if(!token) return res.redirect('/twp');
-
-    jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
-        if(err) return res.redirect('/twp');
-        let user = await User.findById(decodedToken.id)
-        if(user.status === 'banned'){
-            res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
-            res.redirect('/twp')
-            return
-        }
-        req.user = user 
-        next()
-    })
 }
