@@ -12,11 +12,11 @@ config()
 
 const app= express();
 
-const { PORT, MONGO_URI2 } = process.env;  
+const { PORT, MONGO_URI } = process.env;  
 
 const port = PORT || 3001; 
 
-connect(MONGO_URI2)     
+connect(MONGO_URI)     
 .then(() => { 
     console.log('MongoDB connected');
 }).catch(err => {
