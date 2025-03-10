@@ -27,7 +27,7 @@
                 webToonz.filter(toon => {if(toon.genre.includes(seriesFilter)) return true}).forEach((toon, i) => {
                     cards.innerHTML += `
                     <div class="card">
-                        <a href="/twp/webtoonz/${toon._id}">
+                        <a href="/twp/webtoon/${toon._id}">
                             <div class="img"><img src="${toon.coverImage}" alt=""></div>
                             <div class="text">${toon.title}</div>
                         </a>
