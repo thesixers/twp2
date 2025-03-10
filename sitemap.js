@@ -5,7 +5,7 @@ async function generateSitemap() {
     const links = [
         { url: '/twp/home', changefreq: 'always', priority: 1.0 },
         { url: '/twp/webtoon', changefreq: 'daily', priority: 0.8 },
-        { url: '/twp/twporiginal', changefreq: 'daily', priority: 0.8 },
+        { url: '/twp/webtoon?type=twporiginal', changefreq: 'daily', priority: 0.8 },
         { url: '/twp/aboutus', changefreq: 'monthly', priority: 0.6 },
         { url: '/twp/webtoon/episodes', changefreq: 'daily', priority: 0.7 },
         { url: '/twp/auth/signup', changefreq: 'monthly', priority: 0.5 },

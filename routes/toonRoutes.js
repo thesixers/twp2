@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     let toonz = type === 'twporiginal' ?  await Toonz.find({twporiginal: true, status: 'approved'}) : await Toonz.find({status: 'approved'});
     let episodes = type === 'twporiginal' ?  await Episode.find({twporiginal: true, isToonVerified: true}) : await Episode.find({isToonVerified: true});
     // res.json( {toonz, episodes} )
-    res.render('list',{title: "Webtoonz", toonz, episodes, display: 'toon'});
+    res.render('list',{title: "Webtoonz", toonz, episodes, display: 'toonz'});
 })
 
 // add toonz

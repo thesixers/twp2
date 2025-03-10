@@ -80,15 +80,6 @@
                     </div>
                 </a>
             </div>
-            <div class="box">
-                <a href="">
-                    <div class="head">Daily Visitors</div>
-                    <div class="count">
-                        <% let Rtoonz = toonz.filter(toon => { if(toon.status === 'rejected'){ return true} }); %>
-                        <%= Rtoonz.length %>
-                    </div>
-                </a>
-            </div>
         </div>
 
         <%- include('./adminparts/scriptureform.ejs') %>
