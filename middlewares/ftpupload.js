@@ -1,4 +1,6 @@
 import { Client } from "basic-ftp";
+import { config } from 'dotenv';
+config()
 
 let {FTPHOST, FTPUSER, FTPPASS} = process.env
 

@@ -54,7 +54,7 @@ export async function localSeriesUpload(file,title){
 
     const remotePath = `/webtoonz/${title}-${unique}`;
     let path = await uploadFileToFtp(file, remotePath, `coverImage.${mimetype}`);
-    if(path.includes('Error uploading file to FTP server')) throw new Error("file upload failed pls retry");
+    if(path.toString().includes('Error uploading file to FTP server')) throw new Error("file upload failed pls retry");
     values.url = path;
 
     return values;
@@ -70,8 +70,8 @@ export async function uploadEp(files,filename,eptitle,res){
 
     let epPages = Object.entries(files)
     .filter(([key]) => key.includes('page') )
-    .map(([_,value]) => value)
-    .forEach((page, index) => {
+    .map(([_,value]) => value);
+    epPages.forEach((page, index) => {
         const mimetype = page.mimetype.split('/')[1];
         const pgFolder =  `/webtoonz/${filename}/${eptitle}/pages`;
         uploads.pages.push({url: `${pgFolder}/pg${index + 1}.${mimetype}`, temp: page.tempFilePath});
@@ -82,7 +82,7 @@ export async function uploadEp(files,filename,eptitle,res){
     if(uploads['coverImage'].toString().includes('Error')) res.status(500).json({E: 'file upload failed pls retry'});
 
     uploads.pages = await uploadFileToFtp('', `${epFolder}/pages`, uploads.pages)
-    if(uploads["pages"].includes('Error uploading file to FTP server')) res.status(500).json({E: 'file upload failed pls retry'});
+    if(uploads["pages"].toString().includes('Error')) res.status(500).json({E: 'file upload failed pls retry'});
     return uploads;
 }
 
@@ -104,14 +104,12 @@ export function tokenChecker(req,res,next){
         jwt.verify(token,JWT_SECRET, async (err, decodedToken) => {
             if(err){
                 res.locals.user = null; 
-                console.log(err);
                 next()
             }else{
                 let user = await User.findById(decodedToken.id);
-                
                 res.locals.user =  user ? user : null;
                next()
-            }
+            }               
         });
     } 
 }
@@ -138,6 +136,7 @@ export function calculateAge(dob){
     return [age, months];
 }
 
+
 /*this is a fresh script for the new twp server middleware*/
 export function authRoute(req,res,next){
     let token = req.cookies.twpAccount
@@ -146,6 +145,7 @@ export function authRoute(req,res,next){
     jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
         if(err) return res.sendStatus(403);
         let user = await User.findById(decodedToken.id)
+        if(!user) return res.sendStatus(401);
         if(user.status === 'banned'){
             res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
             return res.status(403).json({E: 'ur account has been banned'})
@@ -162,10 +162,10 @@ export function authPage(req,res,next){
     jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
         if(err) return res.redirect('/twp');
         let user = await User.findById(decodedToken.id)
+        if(!user) return res.redirect('/twp');
         if(user.status === 'banned'){
             res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
-            res.redirect('/twp')
-            return
+           return res.redirect('/twp')
         }
         req.user = user 
         next()

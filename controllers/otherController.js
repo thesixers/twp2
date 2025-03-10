@@ -1,22 +1,17 @@
 import Toonz from '../model/webtoonz.js';
-import { dltEp, tokenChecker, uploadEp } from '../middlewares/tokencheckers.js';
-import User from '../model/users.js';
 import Episode from '../model/episode.js';
 import Scripture from '../model/scripture.js';
-import fs from 'fs'
-import Comment from '../model/comments.js';
 import Message from '../model/messages.js'
-import { deleteFileFromFtp } from '../middlewares/ftpupload.js';
 
 export const slash_get = (req,res) => res.redirect('/twp/home')
 
 export const home_get = async (req,res)=>{
     let scripture = await Scripture.find();
-    let toonz = await Toonz.find();
-    let fToonz = toonz.filter(toon => toon.status === 'approved').reverse().slice(0,6);
-    let eps = await Episode.find();
-    let fEps = eps.filter(ep => ep.isToonVerified).reverse().slice(0,6);
-    res.render('landing',{title: "Home", toonz: fToonz, eps: fEps, scripture});
+    let toonz = await Toonz.find({status: 'approved'});
+    toonz = toonz.reverse().slice(0,6);
+    let eps = await Episode.find({isToonVerified: true});
+    eps = eps.reverse().slice(0,6);
+    res.render('landing',{title: "Home", toonz, eps, scripture});
 }
 
 export const aboutus_get = async (req,res) => {

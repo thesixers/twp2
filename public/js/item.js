@@ -111,7 +111,7 @@ epForm.addEventListener('submit', async function(e){
     if(!isValid) return;
 
     try{
-        let res = await fetch('/twp/uploadepisode', {
+        let res = await fetch('/twp/webtoon/episode', {
             method: 'POST',
             body: Data
         });
@@ -132,6 +132,7 @@ epForm.addEventListener('submit', async function(e){
         
     }
     catch(err){
+        console.log(err);
         displayError(err.message)
     }
     finally{

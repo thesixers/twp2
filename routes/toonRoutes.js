@@ -1,7 +1,7 @@
 import { Router } from "express"
 import Toonz from "../model/webtoonz.js";
 import Episode from "../model/episode.js";
-import { authPage, authRoute, uploadEp } from "../middlewares/tokencheckers.js";
+import { authPage, authRoute, uploadEp, localSeriesUpload } from "../middlewares/tokencheckers.js";
 import Comment from "../model/comments.js";
 import User from "../model/users.js";
 import { deleteFileFromFtp } from "../middlewares/ftpupload.js";
@@ -217,12 +217,12 @@ router.post('/episode', authRoute, async (req, res) => {
         await ep.updateOne({coverImage: uploads.coverImage, pages: uploads.pages })
         await toon.updateOne({$push: {chapters: ep.id}})
 
-        if(seriesStatus === 'pending') {res.status(200).json({M: `Episode uploaded successfully!!🎉🎉. \n Thank You For uploading Your Webtoon. Your webtoon is under review, Please note that this may take up to 3 to 4 working days and You will be notified if it is approved`})}
+        if(toon.status === 'pending') {res.status(200).json({M: `Episode uploaded successfully!!🎉🎉. \n Thank You For uploading Your Webtoon. Your webtoon is under review, Please note that this may take up to 3 to 4 working days and You will be notified if it is approved`})}
         else{ res.status(200).json({M: 'Episode uploaded successfully!!🎉🎉'}) }
 
     } catch (err) {
         console.log(err);
-        res.status(500).json({E: err.message});
+        // res.status(500).json({E: err.message});
     }
 })
 

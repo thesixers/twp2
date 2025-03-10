@@ -62,7 +62,6 @@ const newTwpUser = new Schema({
 
 newTwpUser.pre('save',  async function(next){
     let salt = await bcrypt.genSalt();
-    console.log(this.password)
     this.password = await  bcrypt.hash(this.password, salt); 
     next();
 })

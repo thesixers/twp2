@@ -13,10 +13,10 @@
             <li class="b"><a href="/twp/aboutus#contact">Contact Us</a> </li>
             <% if (user) { %>
                 <% if(user.type === 'admin1' || user.type === 'admin2') {%>
-                    <li class="b"><a href="/twp/admin">Admin Panel</a></li>
+                    <li class="b"><a href="/twp/admin">Admin</a></li>
                 <% }else{ %>
                     <% if(user.isAuthor){ %>
-                        <li class="b"><a href="/twp/author">Authors Page</a></li>
+                        <li class="b"><a href="/twp/author">Author</a></li>
                     <% } %>    
                 <% } %>
             <% } %>
@@ -61,10 +61,10 @@
         <div class="menu"><a href="/twp/aboutus#contact">Contact Us</a></div>
         <% if(user){ %>
             <% if(user.type === 'admin1' || user.type === 'admin2') {%>
-                <div class="menu"><a href="/twp/admin">Admin Panel</a></div>
+                <div class="menu"><a href="/twp/admin">Admin</a></div>
             <% }else{ %>
                 <% if(user.isAuthor){ %>
-                    <div class="menu"><a href="/twp/author">Authors Page</a></div>
+                    <div class="menu"><a href="/twp/author">Author</a></div>
                 <% } %>    
             <% } %>
             <div class="menu"><a href="/twp/auth/logout">Logout</a></div>
