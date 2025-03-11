@@ -13,8 +13,8 @@ let preloader = document.querySelector('.preloader-container');
 // }) 
 
 // setTimeout(() => {
-//     preloader.style.display = 'none';
-// }, 1000);
+    preloader.style.display = 'none';
+// }, 500);
 
 document.addEventListener('DOMContentLoaded', () => {
     // const toonzCards = document.querySelectorAll('.toonz-card');
