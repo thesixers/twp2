@@ -8,9 +8,13 @@ const genreMobile = document.querySelector('.genre-mobile');
 let menuToggle = false;
 let preloader = document.querySelector('.preloader-container');
 
-window.addEventListener('load', function(){
-    preloader.style.display = 'none';
-}) 
+// window.addEventListener('load', function(){
+//     preloader.style.display = 'none';
+// }) 
+
+// setTimeout(() => {
+//     preloader.style.display = 'none';
+// }, 1000);
 
 document.addEventListener('DOMContentLoaded', () => {
     // const toonzCards = document.querySelectorAll('.toonz-card');

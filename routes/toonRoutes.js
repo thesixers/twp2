@@ -78,20 +78,20 @@ router.get('/:id', async (req, res) => {
 // update toonz
 router.put('/sub/:id', authRoute, async (req, res) => {
     let toonId = req.params.id;
-    let {id, type} = req.user
+    let { id } = req.user
     const user = await User.findById(id);
     let toon = await Toonz.findById(toonId);
     if(!toon) return res.sendStatus(404);
 
-    if(!user.subcriptions.includes(id)){
-        await user.updateOne({$push: {subcriptions: id}})
+    if(!user.subcriptions.includes(toonId)){
+        await user.updateOne({$push: {subcriptions: toonId}})
         toon.subscription += 1;
         await toon.save();
         return res.status(200).json({M: 'subscribed', subs: toon.subscription})
     }
 
-    await user.updateOne({$pull: {subcriptions: id}}); 
-    if(toon.subscription > 0){
+    await user.updateOne({$pull: {subcriptions: toonId}}); 
+    if(toon.subscription > 0){ 
         toon.subscription -= 1
         await toon.save();
     };
