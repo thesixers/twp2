@@ -1,7 +1,7 @@
 {
   "name": "twp_app",
   "version": "1.0.1",
-  "description": "��#\u0000 \u0000t\u0000w\u0000p\u0000\r\u0000 \u0000",
+  "description": "twp_app",
   "main": "app.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "start": "node --watch app.js"
   },
   "keywords": [],
-  "author": "Amaga Nnamdi",
+  "author": "Nnamdi Nnamdi",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.8.1",

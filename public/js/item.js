@@ -286,6 +286,7 @@ const closeMessage = () => {
 }
 
 async function deleteEp(id){
+    console.log(id);
     try {
         let res = await fetch(`/twp/webtoon/episode/${id}`, { method: 'DELETE'});
         let message = await res.text();

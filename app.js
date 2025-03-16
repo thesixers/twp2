@@ -12,11 +12,11 @@ config()
 
 const app= express();
 
-const { PORT, MONGO_URI } = process.env;  
+const { PORT, MONGO_URI2 } = process.env;  
 
 const port = PORT || 3001; 
 
-connect(MONGO_URI)     
+connect(MONGO_URI2)     
 .then(() => { 
     console.log('MongoDB connected');
 }).catch(err => {
@@ -43,11 +43,11 @@ app.get('/', (req,res)=>{ res.redirect('/twp') });
 
 app.use('/twp', otherRoute);
 
-app.use('/twp/webtoon', toonRoute)
-
 app.use('/twp/auth', authRoute);
 
 app.use('/twp/admin', adminRoute);
+
+app.use('/twp/webtoon', toonRoute)
 
 app.use((req,res,next) => { 
     res.render('404', {user: res.locals.user, title: '404 Page'}) 

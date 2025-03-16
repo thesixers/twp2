@@ -1,7 +1,7 @@
 import { Router } from "express"
 import Toonz from "../model/webtoonz.js";
 import Episode from "../model/episode.js";
-import { authPage, authRoute, uploadEp, localSeriesUpload } from "../middlewares/tokencheckers.js";
+import { authPage, authRoute, uploadEp, localSeriesUpload, dltEp } from "../middlewares/tokencheckers.js";
 import Comment from "../model/comments.js";
 import User from "../model/users.js";
 import { deleteFileFromFtp } from "../middlewares/ftpupload.js";
@@ -244,6 +244,7 @@ router.delete('/episode/:id', authRoute, async (req, res) => {
         await toon.updateOne({$pull: {chapters: epId}});
         res.status(200).send('episode has been deleted') 
     } catch (err) {
+        console.log(err);
         res.status(500).send(err.message)
     }
 });
