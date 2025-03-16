@@ -126,13 +126,13 @@
                             <div class="date"><%= ep?.releaseDate %></div>
                             <% if (user) { %>
                                 <% if (toon?.uploadAcc === user?.id) { %>
-                                    <div class="delete-btn" onclick="openEpModal()" title="Delete this episode">
+                                    <div class="delete-btn" onclick="openEpModal('<%= ep?.id %>')" title="Delete this episode">
                                         <span class="material-symbols-outlined delete-icon">
                                         delete
                                         </span>
                                     </div>
                                 <% } else if(toon?.twporiginal && user?.type.includes('admin')){%>
-                                    <div class="delete-btn" onclick="openEpModal()" title="Delete this episode">
+                                    <div class="delete-btn" onclick="openEpModal('<%= ep?.id %>')" title="Delete this episode">
                                         <span class="material-symbols-outlined delete-icon">
                                         delete
                                         </span>
@@ -150,7 +150,7 @@
                               <p>Are you sure you want to delete this Episode?</p>
                               <div class="modal-btns">
                                   <button class="btn cancelBtn" onclick="closeEpModal()">Cancel</button>
-                                  <button class="btn" onclick="deleteEp('<%= ep?.id %>')">Delete</button>
+                                  <button class="btn" onclick="deleteEp()">Delete</button>
                               </div>
                             </div>
                           

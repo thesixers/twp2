@@ -51,11 +51,9 @@ export async function deleteFileFromFtp(dir) {
             password: "Thewebtoonprojectisthebest2468#",
             secure: false
         });
-
-        console.log("Connected to FTP server");
-
+        // console.log("Connected to FTP server");
         await client.removeDir(dir)
-        console.log('file removed');
+        // console.log('file removed');
     } catch (err) {
         console.log(err);
     } finally {

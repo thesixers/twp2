@@ -19,6 +19,7 @@ let commentBtn = document.getElementById('post-comment');
 let sub = document.querySelector('.sub');
 let askToRegisterContainer = document.querySelector('.asktoregister-container')
 let askToRegisterClose = document.querySelector('.asktoregister-close')
+let epDeleteId = ''
 
 window.addEventListener('load', function() {
     checkSubcribtion();
@@ -285,10 +286,10 @@ const closeMessage = () => {
     popMessage.style.display = 'none';
 }
 
-async function deleteEp(id){
-    console.log(id);
+async function deleteEp(){
+    if(!epDeleteId) return;
     try {
-        let res = await fetch(`/twp/webtoon/episode/${id}`, { method: 'DELETE'});
+        let res = await fetch(`/twp/webtoon/episode/${epDeleteId}`, { method: 'DELETE'});
         let message = await res.text();
         if(!res.ok) throw new Error(message);
         location.reload();
@@ -312,10 +313,12 @@ var epModal = document.querySelector('.modal-ep');
 var seriesModal = document.querySelector('.modal-series');
 
 function openEpModal(id) {
+    epDeleteId = id;
     epModal.style.display = "block";
 }
 
 function closeEpModal() {
+    epDeleteId = '';
     epModal.style.display = "none";
 }
 

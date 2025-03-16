@@ -244,7 +244,6 @@ router.delete('/episode/:id', authRoute, async (req, res) => {
         await toon.updateOne({$pull: {chapters: epId}});
         res.status(200).send('episode has been deleted') 
     } catch (err) {
-        console.log(err);
         res.status(500).send(err.message)
     }
 });

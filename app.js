@@ -14,7 +14,7 @@ const app= express();
 
 const { PORT, MONGO_URI } = process.env;  
 
-const port = PORT || 3001; 
+const port = PORT || 3001;  
 
 connect(MONGO_URI)     
 .then(() => { 
