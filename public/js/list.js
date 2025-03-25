@@ -21,12 +21,26 @@
             genrez.style.display = 'none';
         })
 
-        function loadToonz(seriesFilter= ''){
-            cards.innerHTML = '';
+        function loadToonz(){
+            cards.innerHTML = "" ;
             if(display === 'toonz'){
-                webToonz.filter(toon => {if(toon.genre.includes(seriesFilter)) return true}).forEach((toon, i) => {
+                if(genres === "all"){
+                    webToonz.forEach((toon, i) => {
+                        cards.innerHTML += `
+                        <div class="card"> 
+                            <a href="/twp/webtoon/${toon._id}">
+                                <div class="img"><img src="${toon.coverImage}" alt=""></div>
+                                <div class="text">${toon.title}</div>
+                            </a>
+                        </div>
+                        `
+                    });
+                    return
+                }
+
+                webToonz.filter(toon => toon.genre.includes(genres) ).forEach((toon, i) => {
                     cards.innerHTML += `
-                    <div class="card">
+                    <div class="card"> 
                         <a href="/twp/webtoon/${toon._id}">
                             <div class="img"><img src="${toon.coverImage}" alt=""></div>
                             <div class="text">${toon.title}</div>
@@ -54,16 +68,17 @@
 
         genreS.forEach(genre => {
             genre.addEventListener('click', (e) => {
-                console.log(e.target.value);
-                let value = e.target.value;
+                genres = e.target.value
                 genrez.classList.remove('show-drop')
+                loadToonz()
             })
         }); 
 
         tys.forEach(ty => {
             ty.addEventListener('click', (e) =>{
-                let value  = e.target.value;
+                display = e.target.value
                 type.classList.remove('show-drop')
+                loadToonz();
             })
         });
 
@@ -118,22 +133,4 @@
             }
            
         }
-
-        function show(type){
-            if(type === 'series'){
-                display = 'toonz';
-                filterThree.style.display = 'block'
-            }else{
-                display = 'chapters';
-                filterThree.style.display = 'none';
-            }
-            loadToonz();
-        }
-
-        function genre(genre) {
-            genres = genre
-            if(genre === 'all') return loadToonz();
-            loadToonz(genre)
-        }
-
    

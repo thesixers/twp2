@@ -16,7 +16,7 @@ const { PORT, MONGO_URI } = process.env;
 
 const port = PORT || 3001;  
 
-connect(MONGO_URI)     
+connect(MONGO_URI)      
 .then(() => { 
     console.log('MongoDB connected');
 }).catch(err => {
@@ -43,7 +43,7 @@ app.get('/', (req,res)=>{ res.redirect('/twp') });
 
 app.use('/twp', otherRoute);
 
-app.use('/twp/auth', authRoute);
+app.use('/twp/auth', authRoute); 
 
 app.use('/twp/admin', adminRoute);
 
