@@ -30,7 +30,7 @@
                         <div class="webToon">
                                 <div class="img-cover">
                                     <a href="/twp/webtoon/${toon._id}">
-                                        <img src="${toon.coverImage}" alt="<%= toon.title %>">
+                                        <img src="${toon.coverImage}" alt="${toon.title}">
                                     </a>
                                 </div>
                                 <div class="webToonDetails">
@@ -45,25 +45,39 @@
                     return
                 }
 
-                webToonz.filter(toon => toon.genre.includes(genres) ).forEach((toon, i) => {
+                webToonz.reverse().filter(toon => toon.genre.includes(genres) ).forEach((toon, i) => {
                     cards.innerHTML += `
-                    <div class="card"> 
-                        <a href="/twp/webtoon/${toon._id}">
-                            <div class="img"><img src="${toon.coverImage}" alt=""></div>
-                            <div class="text">${toon.title}</div>
-                        </a>
-                    </div>
+                    <div class="webToon">
+                                <div class="img-cover">
+                                    <a href="/twp/webtoon/${toon._id}">
+                                        <img src="${toon.coverImage}" alt="${toon.title}">
+                                    </a>
+                                </div>
+                                <div class="webToonDetails">
+                                    <div class="name">
+                                        <a href="/twp/webtoon/${toon._id}">${toon.title}</a>
+                                    </div> 
+                                    <span class="genres">${toon.genre}</span>
+                                </div>
+                            </div>
                     `
                 });
             }else{
-                Episodes.forEach((toon, i) => {
+                Episodes.reverse().forEach((episode, i) => {
                     cards.innerHTML += `
-                    <div class="card">
-                        <a href="/twp/webtoonz/ep/${toon._id}">
-                            <div class="img"><img src="${toon.coverImage}" alt=""></div>
-                            <div class="text">${toon.title}</div>
-                        </a>
-                    </div>
+                    <div class="webToon">
+                            <div class="img-cover">
+                                <a href="/twp/webtoon/episode/${episode._id}">
+                                    <img src="${episode.coverImage}" alt="${episode.title}">
+                                </a>
+                            </div>
+                            <div class="webToonDetails">
+                                <div class="name">
+                                    <a href="/twp/webtoon/episode/${episode._id}">${episode.title}</a>
+                                </div> 
+                                <span class="genres">${ episode.releaseDate }</span>
+                            </div>
+                        </div>
                     `
                 });
             }
