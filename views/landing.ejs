@@ -57,16 +57,18 @@
                 <% if(toonz){ %>
                     <% toonz.forEach((toon, i) => { %>
                         <div data-aos="zoom-out-down">
-                            <div class="Rwebtoonz">
-                                <a href="/twp/webtoon/<%= toon.id %>">
-                                    <div class="overlay overlay0"></div>
-                                    <div class="box-image"><img src="<%= toon.coverImage %>" alt="kjk"></div>
-                                    <div class="box-text">
-                                        
-                                        <div class="name"><a href="/twp/webtoon/<%= toon.id %>"><%= toon.title %></a></div>
-                                        <div class="ev"> <span class="genres"><%= toon.genre %></span></div>
-                                    </div>
-                                </a>
+                            <div class="webToon">
+                                <div class="img-cover">
+                                    <a href="">
+                                        <img src="<%= toon.coverImage %>" alt="<%= toon.title %>">
+                                    </a>
+                                </div>
+                                <div class="webToonDetails">
+                                    <div class="name">
+                                        <a href="/twp/webtoon/<%= toon.id %>"><%= toon.title %></a>
+                                    </div> 
+                                    <span class="genres"><%= toon.genre %></span>
+                                </div>
                             </div>
                         </div>
                     <% }); %>
@@ -81,16 +83,17 @@
                 <% if(eps){ %>
                     <% eps.forEach((ep, i) => { %>
                         <% let time = 100 / (i + 2) %>
-                        <div data-aos="zoom-out-down">
-                            <div class="Rwebtoonz">
+                        <div class="webToon">
+                            <div class="img-cover">
                                 <a href="/twp/webtoon/episode/<%= ep.id %>">
-                                    <div class="overlay overlay0"></div>
-                                    <div class="box-image"><img src="<%= ep.coverImage %>" alt="kjk"></div>
-                                    <div class="box-text">
-                                        <div class="name"><a href="/twp/webtoon/episode/<%= ep.id %>"><%= ep.title %></a></div>
-                                        <div class="ev"> <span class="genres"><%= ep.releaseDate %></span></div>
-                                    </div>
+                                    <img src="<%= ep.coverImage %>" alt="<%= ep.title %>">
                                 </a>
+                            </div>
+                            <div class="webToonDetails">
+                                <div class="name">
+                                    <a href="/twp/webtoon/episode/<%= ep.id %>"><%= ep.title %></a>
+                                </div> 
+                                <span class="genres"><%= ep.releaseDate %></span>
                             </div>
                         </div>
                     <% }) %>

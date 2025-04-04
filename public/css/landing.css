@@ -418,6 +418,44 @@ body{
 /* .recent .container:hover > :not(:hover){
     opacity: 0.3;
 } */
+.webToon{
+    width: 130px;
+    /* overflow: hidden; */
+    padding: 1px;
+}
+.webToon .img-cover{
+    height: 160px;
+    overflow: hidden;
+    box-shadow: 0px 4px 5px 1px #4141413f;
+    /* border: 1px solid rgba(128, 128, 128, 0.171); */
+}
+.webToon .img-cover img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.webToonDetails{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.webToonDetails .name a{
+    color: #2b2a2a;
+    text-decoration: none;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.webToonDetails span{
+    color:  gray;
+    width: 100%;
+    word-wrap: break-word;
+    font-size: 12px;
+}
+/* .webToon:hover .webToonDetails span{
+    color: #000;
+} */
 .container .Rwebtoonz{
     background-color: var(--orange--);
     width: 120px;

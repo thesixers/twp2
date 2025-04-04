@@ -169,8 +169,7 @@ router.delete('/comment/:id', authRoute, async (req,res) => {
     } catch (err) {
         res.status(500).json({E: err.message});  
     }
-})
-
+}) 
 
 /****************** episodes routes *********************/ 
 router.get('/episode/upload', authPage, (req, res) => {

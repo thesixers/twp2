@@ -12,7 +12,7 @@ config()
 
 const app= express();
 
-const { PORT, MONGO_URI } = process.env;  
+const { PORT, MONGO_URI } = process.env;
 
 const port = PORT || 3001;  
 

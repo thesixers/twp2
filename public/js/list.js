@@ -27,12 +27,19 @@
                 if(genres === "all"){
                     webToonz.forEach((toon, i) => {
                         cards.innerHTML += `
-                        <div class="card"> 
-                            <a href="/twp/webtoon/${toon._id}">
-                                <div class="img"><img src="${toon.coverImage}" alt=""></div>
-                                <div class="text">${toon.title}</div>
-                            </a>
-                        </div>
+                        <div class="webToon">
+                                <div class="img-cover">
+                                    <a href="/twp/webtoon/${toon._id}">
+                                        <img src="${toon.coverImage}" alt="<%= toon.title %>">
+                                    </a>
+                                </div>
+                                <div class="webToonDetails">
+                                    <div class="name">
+                                        <a href="/twp/webtoon/${toon._id}">${toon.title}</a>
+                                    </div> 
+                                    <span class="genres">${toon.genre}</span>
+                                </div>
+                            </div>
                         `
                     });
                     return
