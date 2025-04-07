@@ -5,7 +5,8 @@ import {
     home_get,
     slash_get, 
     aboutus_get,
-    complaint_post
+    complaint_post,
+    // get_home_details
 } from '../controllers/otherController.js';
 
 const router = express.Router();
@@ -13,6 +14,8 @@ const router = express.Router();
 router.get('/', slash_get);
 
 router.get('/home', home_get);
+
+// router.get('/homedetails', get_home_details);
 
 router.get('/aboutus', aboutus_get);
 

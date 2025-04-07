@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('./partials/metatags.ejs') %>
+    <%- include('./partials/mainmetas.ejs') %>
     <title>TWP | <%= title %></title>
     <link rel="stylesheet" href="/css/landing.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -74,7 +72,9 @@
                     <% }); %>
                 <% } %>    
             </div>
-            <a href="/twp/webtoon" class="a-more"><div class="more">More</div></a>
+            <div class="more">
+                <a href="/twp/webtoon">more..</a>
+            </div>
         </div>
 
         <div class="recent">
@@ -99,7 +99,9 @@
                     <% }) %>
                 <% } %>
             </div>
-            <a href="/twp/webtoon" class="a-more"><div class="more">More</div></a>
+            <div class="more">
+                <a href="/twp/webtoon">more..</a>
+            </div>
         </div>
         <!-- <hr> -->
         <div class="scriptures">

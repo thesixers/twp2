@@ -14,13 +14,22 @@ router.get('/upload', authPage, (req, res) => {
     res.render('seriesUpload', {title: 'Series Upload', message})
 })
 
-// get toonz
+// get page toonz
 router.get('/', async (req, res) => {
+    res.render('list',{title: "Webtoonz", description: "Explore a vast collection of engaging webtoons on The Webtoon Project. Immerse yourself in captivating stories and unique artwork. Start reading now!"});
+})
+
+// get toonz
+router.get('/fetchtoons', async (req, res) => {
     let { type } = req.query; 
     let toonz = type === 'twporiginal' ?  await Toonz.find({twporiginal: true, status: 'approved'}) : await Toonz.find({status: 'approved'});
     let episodes = type === 'twporiginal' ?  await Episode.find({twporiginal: true, isToonVerified: true}) : await Episode.find({isToonVerified: true});
     // res.json( {toonz, episodes} )
-    res.render('list',{title: "Webtoonz", toonz, episodes, display: 'toonz'});
+    res.json({
+        toonz, 
+        episodes, 
+        display: 'toonz',
+    });
 })
 
 // add toonz
@@ -60,7 +69,7 @@ router.post('/', authRoute , async (req, res) => {
     }
 })
 
-// get toon
+// get single toon
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -69,7 +78,7 @@ router.get('/:id', async (req, res) => {
         const episodes = await Episode.find({ _id: { $in: toon.chapters } });
         let comments = await Comment.find({_id: { $in: toon.comments}});
         // res.json({toon, episodes, comments})
-        res.render('item', {title: 'Twp webtoon',toon, episodes, comments}); 
+        res.render('item', {title: toon.title ,toon, episodes, comments, description: toon.description}); 
     } catch (err) {
         res.render('404', {user: res.locals.user, title: '404 Page'})
     }
@@ -183,7 +192,7 @@ router.get('/episode/:id', async (req,res) => {
         const ep = await Episode.findById(id);
         let toon = await Toonz.findOne({chapters: id});
         if(!toon || !ep) throw new Error('file is missing')
-        res.render('read', {title: 'Read', pg: ep.pages, toon}); 
+        res.render('read', {title: 'Read', pg: ep.pages, toon, description: `${ep.title} is an episode/chapter from the ${toon.title} webtoon`, ep}); 
         
     } catch (err) {
         res.render('404', {user: res.locals.user, title: '404 Page'})

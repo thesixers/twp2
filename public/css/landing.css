@@ -254,7 +254,6 @@ body{
     }
 }
 .material-symbols-outlined{
-    /* transform: rotate(180deg); */
     margin-top: 1px;
     transition: 0.5s ease-in;
 }
@@ -413,7 +412,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
 }
 /* .recent .container:hover > :not(:hover){
     opacity: 0.3;
@@ -421,11 +420,14 @@ body{
 .webToon{
     width: 130px;
     padding: 1px;
+    margin-top: 30px;
+    /* background-color: rgba(247, 247, 247, 0.623); */
+    border: 1px solid rgba(243, 241, 241, 0.61);
 }
 .webToon .img-cover{
     height: 160px;
     overflow: hidden;
-    box-shadow: 0px 4px 5px 1px #4141413f;
+    /* box-shadow: 0px 4px 5px 1px #4141413f; */
 }
 .webToon .img-cover img{
     width: 100%;
@@ -437,8 +439,9 @@ body{
     flex-direction: column;
     width: 100%;
     padding-top: 10px;
-    padding-left: 2px;
-    padding-right: 2px;
+    /* padding-left: 2px; */
+    /* padding-right: 2px; */
+    padding-bottom: 5px;
 }
 .webToonDetails .name a{
     color: #2b2a2a;
@@ -451,9 +454,6 @@ body{
     word-wrap: break-word;
     font-size: 12px;
 }
-/* .webToon:hover .webToonDetails span{
-    color: #000;
-} */
 .container .Rwebtoonz{
     background-color: var(--orange--);
     width: 120px;
@@ -522,17 +522,17 @@ body{
 }
 .recent .more{
     margin: auto;
-    /* background-color: var(--orange--); */
     width: 200px;
     text-align: center;
     padding: 10px;
     margin-top: 40px;
+    
 }
 
-.recent .a-more{
+.recent .more a{
     /* text-decoration: none; */
     color: var(--orange--);
-    font-size: 20px;
+    font-size: 17px;
     font-family: var(--font---);
     font-weight: 600;
 }
@@ -1466,13 +1466,31 @@ input[type="number"]{
         border: 1px solid var(--orange--);
     }
 }
+.webtoon-preloader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 100%;
+    flex-direction: column;
+}
+.webtoon-preloader p{
+    color: gray;
+}
+
+.webtoon-preloader p span{
+    text-decoration: underline;
+    color: rgb(25, 25, 253);
+    font-style: italic;
+    cursor: pointer;
+}
 .cards{
     padding: 10px 0px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    /* column-gap: 20px; */
+    /* height: 800px; */
 }
 .cards::-webkit-scrollbar{
     display: none;
@@ -1899,7 +1917,6 @@ input[type="number"]{
     align-items: center;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    transform: rotate(180deg);
     transition: 0.3s ease-in-out;
 }
 
@@ -2204,6 +2221,7 @@ input[type="number"]{
     cursor: pointer;
     transition: 0.2s linear;
     padding: 5px 10px;
+    color: gray;
 
     &:hover{
         color: var(--orange--);
@@ -2259,6 +2277,7 @@ input[type="number"]{
     align-items: center;
     justify-content: center;
     gap: 20px;
+    color: gray;
 }
 .details-wrapper .info-wrapper{
     padding: 10px 20px;
@@ -2557,80 +2576,12 @@ transform-origin: center;
 }
 @media (max-width: 320px) {
     .dob-container{
-        /* border: 1px solid #000; */
         display: flex;
         width: 74%;
         margin-left: 40px;
     }
 }
-/* @media (prefers-color-scheme: dark) {
-    :root{
-        --plain--: #1a1a1a;
-        color: white;
-    }
-    .nav li a{
-        color: #fff;
-    }
-    .nav ul .btn a{
-        color: #fff;
-    }
-    .genre-wrapper .search{
-        background-color: #1a1a1a;
-    }
-    .genre-wrapper .search input{
-        background-color: #1a1a1a;
-        color: #fff;
-    }
-    .genre-wrapper .search .S-icon{
-        border-color: #1a1a1a;
-    }
-    .add--scrip-container form{
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 5px 5px 10px -2px #1a1a1a;
-        border-radius: 10px;
-        position: relative;
-        animation: expand 0.5s ease-in-out;
-    }
-    .pop-message .message-box .message{
-        color: whitesmoke;
-    }
-    ::selection{
-        color: #fff;
-        background-color: #e44616;
-    }
-    .details-wrapper .episodes-wrapper{
-        color: #fff;
-    }
-    .item-main .details-wrapper .top{
-        color: #fff;
-    }
-    .details-wrapper .episodes-wrapper .ep .left a, .details-wrapper .episodes-wrapper .ep{
-        color: #fff;
-    }
-    .comment-section h2{
-        color: #fff;
-    }
-    .comment .content{
-        color: #fff;
-    }
-    .comment .user-comment{
-        color: #fff;
-    }
-    .add-comment textarea{
-        background-color: #1a1a1a;
-        color: #fff;
-    }
-    .mobile .menu a{
-        color: #fff;
-    }
-    .author .author-nav .author-upload-btn{
-        color: white;
-    }
-    .item-main .banner .img-blur .details .socials .addEpisode{
-        color: #fff;
-    }
-} */
+
 .asktoregister-container{
     background-color: #33333360;
     position: fixed;

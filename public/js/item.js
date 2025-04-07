@@ -221,7 +221,7 @@ function commentTab(){
 
 function checkTheme(){
     // if(window.matchMedia && darkModeMediaQuery.matches) return '#fff';
-    return '#000'
+    return 'gray'
 }
 
 

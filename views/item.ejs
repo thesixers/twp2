@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('./partials/metatags.ejs') %>
-    <title><%= title %></title>
+    <%- include('./partials/toonmetas.ejs') %>
+    <title>TWP | <%= title %></title>
     <link rel="stylesheet" href="/css/landing.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
     <script type="application/ld+json">
         const structuredData = {
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "name": `<%= toon.title %> - Episodes - The Webtoon Project`,
-            "description": `Read episodes of <%= toon.title %>, an exciting and engaging webtoon on The Webtoon Project. Discover thrilling stories and amazing artwork!`,
-            "url": `https://thewebtoonproject.com/twp/webtoonz/<%= toon.id %>`
+            "name": `TWP | <%= toon.title %>`,
+            "description": `<%= toon.description %>`,
+            "url": `https://thewebtoonproject.com/twp/webtoon/<%= toon.id %>`
           };
     </script>
-        
     <style>
         .episode-form-wrapper{
             position: absolute;
@@ -185,7 +180,8 @@
 
                 <div class="add-comment">
                     <textarea id="new-comment" placeholder="What do u think?..."></textarea>
-                    <div id="post-comment"><span id="icon" class="material-symbols-outlined">
+                    <div id="post-comment">
+                    <span id="icon" class="material-symbols-outlined">
                       send
                       </span>
                     </div>

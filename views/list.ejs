@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('./partials/metatags.ejs') %>
+    <%- include('./partials/mainmetas.ejs') %>
     <title>TWP | <%= title %></title>
+    <link rel="canonical" href="https://thewebtoonproject.com/twp/webtoon">
     <link rel="stylesheet" href="/css/landing.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
@@ -14,7 +15,7 @@
           "@type": "WebPage",
           "name": "Webtoons - The Webtoon Project",
           "description": "Browse through a vast collection of engaging webtoons and comics on The Webtoon Project. Discover captivating stories and beautiful artwork.",
-          "url": "https://thewebtoonproject.com/twp/webtoonz"
+          "url": "https://thewebtoonproject.com/twp/webtoon"
         }
         </script>
         
@@ -67,11 +68,6 @@
     </script>
 
    <script src="/js/landing.js"></script>
-   <script>
-        const webToonz = <%- JSON.stringify(toonz) %>;
-        const Episodes = <%- JSON.stringify(episodes) %>;
-        let display = '<%= display %>';
-   </script>
     <script src="/js/list.js"></script>
     
 </body>

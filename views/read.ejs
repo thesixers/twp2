@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('./partials/metatags.ejs') %>
-    <title>Twp | Read page</title>
+    <%- include('./partials/mainmetas.ejs') %>
+    <title>Twp | <%= title %></title>
     <link rel="stylesheet" href="/css/landing.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="shortcut icon" href="/images/twp_logo.jpg" type="image/x-icon">
+    <link rel="canonical" href="https://thewebtoonproject.com/twp/webtoon/episode/<%= ep.id %>">
     <style>
         .horizontal{
             display: none;
