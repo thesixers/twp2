@@ -3,9 +3,9 @@ import { calculateAge, createJwt, errHandler, generateOTP } from '../middlewares
 import { otpMail, sendEmails } from '../middlewares/mailSender.js';
 import OTP from '../model/otp.js';
 
-export const login_get = (req,res) =>{ res.render('login') }
+export const login_get = (req,res) =>{ res.render('login', {title: 'Login', description: "twps login page "}) }
 
-export const signup_get = (req,res) =>{ res.render('signup') }
+export const signup_get = (req,res) =>{ res.render('signup', {title: 'Signup', description: "twps signup page "}) }
 
 export const forgotpassword_get = (req,res)=> { res.render('passemail') }
 
