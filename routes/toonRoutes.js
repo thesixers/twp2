@@ -5,6 +5,7 @@ import { authPage, authRoute, uploadEp, localSeriesUpload, dltEp, authUser } fro
 import Comment from "../model/comments.js";
 import User from "../model/users.js";
 import { deleteFileFromFtp } from "../middlewares/ftpupload.js";
+import Scripture from "../model/scripture.js";
 
 const router = Router()
  
@@ -25,11 +26,13 @@ router.get('/fetchtoons', authUser, async (req, res) => {
     let user = req.user;
     let toonz = type === 'twporiginal' ?  await Toonz.find({twporiginal: true, status: 'approved'}) : await Toonz.find({status: 'approved'});
     let episodes = type === 'twporiginal' ?  await Episode.find({twporiginal: true, isToonVerified: true}) : await Episode.find({isToonVerified: true});
+    let scriptures = await Scripture.find()
     res.json({
         toonz, 
         episodes, 
         display: 'toonz', 
         user: user ? user : null,
+        scriptures
     });
 })
 
