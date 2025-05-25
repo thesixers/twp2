@@ -89,8 +89,8 @@ newTwpUser.statics.login = async function({email,password}){
     let isMatch = await bcrypt.compare(password, userPassword);
 
     if(!isMatch) throw Error('incorrect password');  
-
-    return user; 
+ 
+    return user
 }
    
 

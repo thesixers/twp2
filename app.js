@@ -8,6 +8,7 @@ import adminRoute from './routes/adminRoutes.js';
 import { tokenChecker } from './middlewares/tokencheckers.js';
 import toonRoute from "./routes/toonRoutes.js"
 import { config } from 'dotenv';
+import cors from "cors"
 config()
 
 const app= express();
@@ -24,6 +25,10 @@ connect(MONGO_URI)
 
 });
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
 
 // Middleware
 app.set('view engine', 'ejs'); 

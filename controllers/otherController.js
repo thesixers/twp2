@@ -46,7 +46,8 @@ export const aboutus_get = async (req,res) => {
 export const author_get = async (req,res)=> {
     if(!req.user.isAuthor) return res.redirect('/twp')
     let toonz = await Toonz.find({uploadAcc: req.user.id})
-    res.render('author', { toonz, description: "The twp authors page"})
+    return res.json({webtoons: toonz})
+    // res.render('author', { toonz, description: "The twp authors page"})
 }
 
 function formatDate(date) {

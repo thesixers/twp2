@@ -33,9 +33,10 @@ export const logout = (req,res)=>{
 export const signup_post = async (req,res) =>{
     let {password, name, email, dob} = req.body;
     let [age, month] = calculateAge(dob);
+    console.log({password, name, email, age})  
 
     if(age < 14){
-        res.status(400).json({E: 'Users have to be 14yrs and above'})
+        return res.json({E: 'Users have to be 14yrs and above'})
     }
 
     try{
@@ -47,7 +48,7 @@ export const signup_post = async (req,res) =>{
         let errs = errHandler(err)
         let { name, email, password } = errs
         let message = name ? name : email ? email : password;
-        res.status(400).json({E: message })
+        res.json({E: message })
     }
     
 }
@@ -61,7 +62,7 @@ export const login_post = async (req,res) =>{
         
         const token = createJwt(id);
         const time = 1 * 24 * 60 * 60 * 1000;
-        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time})
+        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time, secure: false, sameSite: "lax"})
         res.status(200).json({M: 'Login Successful !!!'})  
     } catch (err) {
         let errors = errHandler(err);

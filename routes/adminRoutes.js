@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/', authPage, home_get);
 
-router.put('/webtoon/updatestatus', authRoute, RA_post);
+router.put('/updatetoon', authRoute, RA_post);
 
 router.put('/isban/:id', authRoute, BN_post); 
 

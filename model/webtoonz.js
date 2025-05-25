@@ -7,7 +7,7 @@ const newToonz = new Schema({
     },
     description:{
         type: String,
-        required: [true, 'Webtoonz must have a describtion']
+        required: [true, 'Webtoonz must have a description']
     },
     author:{
         type: String,

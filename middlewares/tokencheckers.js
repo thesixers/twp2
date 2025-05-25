@@ -171,3 +171,23 @@ export function authPage(req,res,next){
         next()
     })
 }
+
+export function authUser(req,res,next){
+    let token = req.cookies.twpAccount
+    if(!token){
+        req.user = null;
+        next()
+    }else{
+        jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
+            if(err) req.user = null;
+            let user = await User.findById(decodedToken.id)
+            if(!user || user.status === 'banned'){
+                req.user = null; 
+            }else{
+                let {  name, type, email, favourites, isAuthor, subcriptions, id } = user
+                req.user = { name, type, email, favourites, isAuthor, subcriptions, _id: id }
+            }
+            next()
+        })
+    }
+}

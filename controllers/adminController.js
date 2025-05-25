@@ -10,10 +10,12 @@ export const home_get = async (req,res)=>{
     let toonz = await Toonz.find();
     let users = await User.find();
     let messages = await Message.find();
-    res.render('adminpanel', {toonz: toonz, users, title: 'Admin', messages}) 
+    res.json({toonz, users, messages})
+    // res.render('adminpanel', {toonz: toonz, users, title: 'Admin', messages}) 
 }
 
 export const RA_post = async (req, res) => {
+    console.log("req came here");
     if(!req.user.type.includes('admin')) 
         return res.status(403).json({E: 'Your account can\'t perform this action'});
     let { status, id } = req.body;

@@ -21,8 +21,7 @@
             </tr>
             </thead>
             <tbody class="webtoonzTable">
-                <!-- webtoonz data -->
-                 <a href=""></a>
+                
             </tbody>
             </table>
             </div>
@@ -151,11 +150,11 @@
             if(E) displayError(E);
             if(toons){
                 toonz = toons;
-                displayWebToonz(toons)
+                displayWebToonz(toons) 
             }
         } catch (error) {
             displayError(error.message)
-        }
+        } 
         finally{
             isLoading = false;
         }
