@@ -26,7 +26,7 @@ connect(MONGO_URI)
 });
 
 app.use(cors({
-    origin: 'https://https://www.thewebtoonproject.com',
+    origin: 'https://www.thewebtoonproject.com',
     credentials: true
 }))
 
