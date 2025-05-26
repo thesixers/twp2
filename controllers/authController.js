@@ -27,7 +27,7 @@ export const emailverify_get = async (req,res) =>{
 
 export const logout = (req,res)=>{
     res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
-    res.redirect('/twp')
+    res.json({M: 'Logged out'})
 }
 
 export const signup_post = async (req,res) =>{
@@ -62,7 +62,7 @@ export const login_post = async (req,res) =>{
         
         const token = createJwt(id);
         const time = 1 * 24 * 60 * 60 * 1000;
-        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time, secure: false, sameSite: "lax"})
+        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time, secure: true, sameSite: "lax"})
         res.status(200).json({M: 'Login Successful !!!'})  
     } catch (err) {
         let errors = errHandler(err);

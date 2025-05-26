@@ -25,19 +25,19 @@ export default async function uploadFileToFtp(file, remoteDir, remoteFileName) {
             for(const urlObj of remoteFileName) {
                 let {url, temp} = urlObj;
                 await client.uploadFrom(temp, url);
-                urlArr.push(`https://forestgreen-woodpecker-273365.hostingersite.com${url}`)
+                urlArr.push(`https://thewebtoonproject.com${url}`)
             }
             return urlArr
         }else{
             await client.uploadFrom(file.tempFilePath, url);
-            return `https://forestgreen-woodpecker-273365.hostingersite.com${url}`
+            return `https://thewebtoonproject.com${url}`
         }
 
     } catch (err) {
         return "Error uploading file to FTP server:", err
     } finally {
-        client.close();
-    }
+        client.close();  
+    } 
 }
 
 
@@ -46,9 +46,9 @@ export async function deleteFileFromFtp(dir) {
 
     try {
         await client.access({
-            host: "92.113.19.240",
-            user: "u230430233.joe",
-            password: "Thewebtoonprojectisthebest2468#",
+            host: FTPHOST,
+            user: FTPUSER,
+            password: FTPPASS,
             secure: false
         });
         // console.log("Connected to FTP server");

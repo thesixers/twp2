@@ -26,11 +26,12 @@ router.get('/fetchtoons', authUser, async (req, res) => {
     let user = req.user;
     let toonz = type === 'twporiginal' ?  await Toonz.find({twporiginal: true, status: 'approved'}) : await Toonz.find({status: 'approved'});
     let episodes = type === 'twporiginal' ?  await Episode.find({twporiginal: true, isToonVerified: true}) : await Episode.find({isToonVerified: true});
-    let scriptures = await Scripture.find()
+    let scriptures = await Scripture.find();
+    let comments = await Comment.find();
     res.json({
         toonz, 
         episodes, 
-        display: 'toonz', 
+        comments,
         user: user ? user : null,
         scriptures
     });
@@ -208,17 +209,20 @@ router.get('/episode/:id', async (req,res) => {
 
 router.post('/episode', authRoute, async (req, res) => {
     let {seriesid, eptitle} = req.body;
-    if(!req.files) res.status(400).json({E: 'Please add a cover image and at least 4 pages'});
+    if(!req.files) return res.status(400).json({E: 'Please add a cover image and at least 4 pages'});
+
     let releaseDate = new Date().toDateString();
     let toon = await Toonz.findById(seriesid);
-    if(!toon) res.status(404).json({E: 'not webtoon with this id please consider reuploading'})
+
+    if(!toon) return res.status(404).json({E: 'not webtoon with this id please consider reuploading'})
+
     let {title, status, fileCode, twporiginal} = toon;
     const filename = `${title}-${fileCode}`;
      
     try {
         let findDuplicate = await Episode.findOne({title: eptitle, _id: { $in: toon.chapters }});
         if(findDuplicate) res.status(400).json({E: 'you already have an episode with this name'});
-        
+         
         let ep = await Episode.create({
             title: eptitle,
             releaseDate,
@@ -226,7 +230,7 @@ router.post('/episode', authRoute, async (req, res) => {
             isToonVerified: (status === 'approved') ? true : false 
         });
 
-        const uploads = await uploadEp(req.files,filename,eptitle,res);
+        const uploads = await uploadEp(req.files,filename,eptitle,res); 
         if(!uploads) throw new Error("error occured while uploading this episode pls try again");
         
         await ep.updateOne({coverImage: uploads.coverImage, pages: uploads.pages })
@@ -242,6 +246,7 @@ router.post('/episode', authRoute, async (req, res) => {
 })
 
 router.delete('/episode/:id', authRoute, async (req, res) => {
+    console.log("delete req came in");
     const epId = req.params.id;
     const { id, type} = req.user
 

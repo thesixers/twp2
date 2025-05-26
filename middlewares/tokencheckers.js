@@ -65,7 +65,7 @@ export async function uploadEp(files,filename,eptitle,res){
     let epFolder =  `/webtoonz/${filename}/${eptitle}`; 
 
     let epCoverImg = files['epcover']
-    if(!epCoverImg) res.status(400).json({E: 'Episode must have a cover image'});
+    if(!epCoverImg) throw Error("Episode must have a cover image")
     let mimetype = epCoverImg.mimetype.split('/')[1];
 
     let epPages = Object.entries(files)
@@ -76,13 +76,18 @@ export async function uploadEp(files,filename,eptitle,res){
         const pgFolder =  `/webtoonz/${filename}/${eptitle}/pages`;
         uploads.pages.push({url: `${pgFolder}/pg${index + 1}.${mimetype}`, temp: page.tempFilePath});
     });
-    if(epPages.length < 3) res.status(400).json({E: 'Episode must have aleast 3 pages'});
+    if(epPages.length < 3) throw Error('Episode must have aleast 3 pages')
 
     uploads.coverImage = await uploadFileToFtp(epCoverImg, epFolder, `coverImage.${mimetype}`)
-    if(uploads['coverImage'].toString().includes('Error')) res.status(500).json({E: 'file upload failed pls retry'});
+    if(uploads['coverImage'].toString().includes('Error')){
+        console.log(uploads['coverImage'].toString());
+        throw Error('file upload failed pls retry');
+    }
+
 
     uploads.pages = await uploadFileToFtp('', `${epFolder}/pages`, uploads.pages)
-    if(uploads["pages"].toString().includes('Error')) res.status(500).json({E: 'file upload failed pls retry'});
+    if(uploads["pages"].toString().includes('Error')) throw Error('file upload failed pls retry');
+
     return uploads;
 }
 
@@ -133,9 +138,9 @@ export function calculateAge(dob){
 
        months = calcMonth < 0 ? 12 + calcMonth : 12 - calcMonth;
 
-    return [age, months];
+    return [age, months]; 
 }
-
+ 
 
 /*this is a fresh script for the new twp server middleware*/
 export function authRoute(req,res,next){
@@ -151,6 +156,7 @@ export function authRoute(req,res,next){
             return res.status(403).json({E: 'ur account has been banned'})
         }
         req.user = {id: user.id, type: user.type}
+        console.log("user checked successfully 👍🏾");
         next()
     })
 }

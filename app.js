@@ -19,16 +19,16 @@ const port = PORT || 3001;
 
 connect(MONGO_URI)      
 .then(() => { 
-    console.log('MongoDB connected');
+    console.log('MongoDB connected'); 
 }).catch(err => {
     console.log('MongoDB connection error: ', err.message);
 
 });
 
 app.use(cors({
-    origin: 'https://thewebtoonproject.com',
+    origin: ['https://thewebtoonproject.com', 'http://localhost:3000'],
     credentials: true
-}))
+})) 
 
 // Middleware
 app.set('view engine', 'ejs'); 
