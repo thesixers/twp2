@@ -62,7 +62,7 @@ export const login_post = async (req,res) =>{
         
         const token = createJwt(id);
         const time = 1 * 24 * 60 * 60 * 1000;
-        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time, secure: true, sameSite: "lax"})
+        res.cookie('twpAccount', token, {httpOnly: true, maxAge: time, secure: true, sameSite: "None", domain: "https://thewebtoonproject.com", path: "/"})
         res.status(200).json({M: 'Login Successful !!!'})  
     } catch (err) {
         let errors = errHandler(err);
