@@ -1,4 +1,5 @@
 import User from "../model/users.js";
+import bcrypt from "bcrypt"
 import {
   calculateAge,
   createJwt,
@@ -147,7 +148,10 @@ export const resetpassword_post = async (req, res) => {
     let otp = await OTP.findOne({ email: email });
     if (!otp) throw Error("invalid or expired otp request another");
 
-    let user = await User.findOneAndUpdate({ email }, { password });
+    let salt = await bcrypt.genSalt();
+    password = await  bcrypt.hash(password, salt);
+
+    await User.findOneAndUpdate({ email }, { password });
 
     await OTP.deleteOne({ email });
 
