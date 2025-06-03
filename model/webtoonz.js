@@ -21,6 +21,9 @@ const newToonz = new Schema({
         type: Number,
         default: 0,
     },
+    likesArray:{
+        type: Array
+    },
     genre:{
         type: String
     },

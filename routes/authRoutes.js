@@ -21,12 +21,11 @@ router.post('/signup', signup_post);
 
 router.post('/login', login_post);
 
-router.post('/forgotpassword', forgotpassword_post);
+router.post('/sendotp', forgotpassword_post);
 
 router.post('/otp', otp_post);
 
-router.post('/resetpassword', resetpassword_post);
-
+router.put('/resetpassword', resetpassword_post);
 
  
 export default router;

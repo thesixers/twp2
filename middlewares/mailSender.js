@@ -71,7 +71,7 @@ export const sendEmails = (user) =>{
             text-align: center;
             margin-top: 40px;
             ">
-                <a href="https://thewebtoonproject.com/twp/auth/emailverify/${user.id}">
+                <a href="https://twp2.onrender.com/twp/auth/emailverify/${user.id}">
                 <button style="
                     text-decoration: none;
                     border: none;

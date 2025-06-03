@@ -56,7 +56,8 @@ const newTwpUser = new Schema({
     },
     dob:{
         type: String
-    }
+    },
+    likesArray: Array
 });
 
 
