@@ -26,7 +26,7 @@ connect(MONGO_URI)
 });
 
 app.use(cors({
-    origin: ['https://thewebtoonproject.com', "http://localhost:3000"],
+    origin: ['https://thewebtoonproject.com', "http://localhost:3000", "https://twp-vite.onrender.com"],
     credentials: true
 })) 
 
@@ -58,6 +58,6 @@ app.use((req,res,next) => {
     res.render('404', {user: res.locals.user, title: '404 Page'}) 
 })
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 }); 

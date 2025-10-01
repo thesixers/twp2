@@ -55,7 +55,7 @@ export const signup_post = async (req, res) => {
   console.log({ password, name, email, age });
 
   if (age < 14) {
-    return res.json({ E: "Users have to be 14yrs and above" });
+    return res.status(400).json({ E: "Users have to be 14yrs and above" });
   }
 
   try {
@@ -67,13 +67,13 @@ export const signup_post = async (req, res) => {
     });
     sendEmails(user);
     res.status(200).json({
-      M: "Your account has been created, \n you have 24hrs to verify your email check your email for the link",
+      M: "Your account has been created. You have 24hrs to verify your email; please check your email for the link.",
     });
   } catch (err) {
     let errs = errHandler(err);
     let { name, email, password } = errs;
     let message = name ? name : email ? email : password;
-    res.json({ E: message });
+    res.status(400).json({ E: message }); // Assuming errHandler processes validation errors
   }
 };
 
@@ -95,8 +95,13 @@ export const login_post = async (req, res) => {
     res.status(200).json({ M: "Login Successful !!!" });
   } catch (err) {
     let errors = errHandler(err);
-    if (errors.email) res.status(500).json({ E: errors.email });
-    if (errors.password) res.status(500).json({ E: errors.password });
+    if (errors.email) {
+      return res.status(401).json({ E: errors.email }); 
+    }
+    if (errors.password) {
+      return res.status(401).json({ E: errors.password });
+    }
+    return res.status(500).json({ E: "An unexpected error occurred during login." });
   }
 };
 
@@ -105,7 +110,7 @@ export const forgotpassword_post = async (req, res) => {
 
   email = email.trim();
   if (email === "")
-    res.json({ E: "Please enter an email to help us find your Account" });
+    return res.status(400).json({ E: "Please enter an email to help us find your Account" });
 
   try {
     let user = await User.findOne({ email });
@@ -114,10 +119,10 @@ export const forgotpassword_post = async (req, res) => {
     let otptime = new Date(Date.now() + 10 * 60 * 1000);
     let createOtp = await OTP.create({ email, otpcode: otp, otptime });
     otpMail(user, otp);
-    res.json({ M: "Otp has been sent to Your email"});
+    res.status(200).json({ M: "Otp has been sent to your email"});
   } catch (err) {
     console.log(err.message);
-    res.json({ E: "Oops! Error occured pls resend" });
+    res.status(500).json({ E: "Oops! An error occurred. Please try resending." });
   }
 };
 
@@ -127,27 +132,35 @@ export const otp_post = async (req, res) => {
 
   try {
     let otp$ = await OTP.findOne({ email, otpcode: otp });
-    if (!otp)
-      throw Error("Incorrect OTP please check the otp that was entered");
+    if (!otp$) { // Check if the OTP record itself was found
+      // It's better to throw an error that will be caught and handled with a status code
+      return res.status(400).json({ E: "Incorrect OTP. Please check the OTP that was entered." });
+    }
 
     if (otp$.otptime < currentTime) {
       await OTP.deleteOne({ email });
-      throw Error("OTP has exired please for another one with the resend btn");
+      return res.status(400).json({ E: "OTP has expired. Please request another one using the resend button." });
     }
 
-    res.json({ M: "Otp Confirmed" });
+    res.status(200).json({ M: "Otp Confirmed" });
   } catch (err) {
-    res.json({ E: err.message });
+    // This catch block will now primarily handle unexpected server errors
+    // as specific client errors (incorrect/expired OTP) are handled above.
+    console.error("Error in otp_post:", err.message);
+    res.status(500).json({ E: "An unexpected error occurred while verifying OTP." });
   }
 };
 
 export const resetpassword_post = async (req, res) => {
   let { password, email } = req.body;
-
+  if (!password || !email) {
+    return res.status(400).json({ E: "Email and password are required." });
+  }
   try {
     let otp = await OTP.findOne({ email: email });
-    if (!otp) throw Error("invalid or expired otp request another");
-
+    if (!otp) {
+        return res.status(400).json({ E: "Invalid or expired OTP. Please request another." });
+    }
     let salt = await bcrypt.genSalt();
     password = await  bcrypt.hash(password, salt);
 
@@ -155,8 +168,9 @@ export const resetpassword_post = async (req, res) => {
 
     await OTP.deleteOne({ email });
 
-    res.json({ M: "Password changed" });
+    res.status(200).json({ M: "Password changed successfully." });
   } catch (err) {
-    res.json({ E: err.message });
+    console.error("Error in resetpassword_post:", err.message);
+    res.status(500).json({ E: "An error occurred while resetting the password." });
   }
 };

@@ -1,192 +1,21 @@
-<div class="webtoonz-wrapper">
-    <div class="head">
-        <div class="webtoonz-sub wb-all" onclick="changeWebSubMenu('all')">All</div>
-        <div class="webtoonz-sub wb-pending" onclick="changeWebSubMenu('pending')">Pending</div>
-        <div class="webtoonz-sub wb-rejected" onclick="changeWebSubMenu('rejected')">Rejected</div>
-    </div>
-    <div class="searchbar-wrapper">
-        <div class="search"><input type="text" class="wt-search"><div class="S-icon" onclick="searchWT()"><span class="material-symbols-outlined">
-            search
-            </span></div></div>
-    </div>
-    <div class="table-wrapper">
-        <div class="table-container">
-            <table class="responsive-table">
-            <thead>
-            <tr>
-            <th>SN</th>
-            <th>Name of Webtoonz</th>
-            <th>Author</th>
-            <th>Action</th>
-            </tr>
-            </thead>
-            <tbody class="webtoonzTable">
-                
-            </tbody>
-            </table>
-            </div>
-    </div> 
-        
-</div>
+outgoing => unanswered, declined, answered
+incoming => unanswered, declined, answered
 
-<script>
-    let toonz = <%- JSON.stringify(toonz) %>;
-    const webtoonzTable = document.querySelector('.webtoonzTable');
-    const wbAll = document.querySelector('.wb-all');
-    const wbPending = document.querySelector('.wb-pending');
-    const wbRejected = document.querySelector('.wb-rejected');
-    const wtSearch = document.querySelector('.wt-search');
-    let wStatus = 'all';
+this.setPendingCalls((prev) => {
+        const updated = new Map(prev);
+        updated.delete(remoteuserid);
+        return updated;
+    });
     
-
-    const changeWebSubMenu = (status)=>{
-    const wbView = document.querySelectorAll('.wb-view');
-    const wbApprove = document.querySelectorAll('.approve');
-    const wbReject = document.querySelectorAll('.reject');
-    wStatus = status;
-
-    if(status === 'all'){
-        wbAll.style.color = '#e44616';
-        wbPending.style.color = '#abb8c3';
-        wbRejected.style.color = '#abb8c3';
-        wbApprove.forEach(m => {
-            m.style.display = 'none';
-        })
-        wbReject.forEach(m => {
-            m.style.display = 'none';
-        })
-        wbView.forEach(m => {
-            m.style.display = 'inline';
-        })
-        displayWebToonz(toonz);
-    }
-
-    if(status === 'pending'){
-        wbAll.style.color = '#abb8c3';
-        wbPending.style.color = '#e44616';
-        wbRejected.style.color = '#abb8c3';
-        let fToonz = toonz.filter(toon =>  toon.status === 'pending' );
-        wbApprove.forEach(m => {
-            m.style.display = 'inline';
-        })
-        wbReject.forEach(m => {
-            m.style.display = 'inline';
-        })
-        wbView.forEach(m => {
-            m.style.display = 'inline';
-        })
-        displayWebToonz(fToonz);
-    }
-
-    if(status === 'rejected'){
-        wbAll.style.color = '#abb8c3';
-        wbPending.style.color = '#abb8c3';
-        wbRejected.style.color = '#e44616';
-        let fToonz = toonz.filter(toon =>  toon.status === 'rejected' )
-        wbApprove.forEach(m => {
-            m.style.display = 'none';
-        })
-        wbReject.forEach(m => {
-            m.style.display = 'none';
-        })
-        wbView.forEach(m => {
-            m.style.display = 'inline';
-        })
-        displayWebToonz(fToonz);
-    }
-}
-
-    function displayWebToonz(toonz){
-    webtoonzTable.innerHTML = ''
-    toonz.forEach((toon, i) => {
-            webtoonzTable.innerHTML += `<tr>
-                            <td>${i + 1}</td>
-                            <td>${toon.title}</td>
-                            <td>${toon.author}</td>
-                            <td>
-                            <a href="/twp/webtoon/${toon._id}"><button class="btn view wb-view" >View</button></a>
-                            ${toon.status === 'pending' ? `<button class="btn approve wb-approve" onclick='ans("${toon._id}", "approved")'>Approve</button><button class="btn reject wb-reject" onclick='ans("${toon._id}", "rejected")'>Reject</button>` : toon.status === 'rejected' ? `<button class="btn approve wb-approve" onclick='ans("${toon._id}", "approved")'>Approve</button>` : `<button class="btn reject wb-reject" onclick='ans("${toon._id}", "rejected")'>Reject</button>`}
-                            </td>
-                            </tr>`;
-        });
-    }
-
-    wtSearch.addEventListener('keyup', (e) => searchWT())
-
-    function searchWT(){
-        let value = wtSearch.value.toUpperCase();
-
-        if(wStatus === 'all'){
-            let fToonz = toonz.filter(user => user.title.toUpperCase().includes(value));
-            displayWebToonz(fToonz);;
-        }
-
-        if(wStatus === 'pending'){
-            let fToonz = toonz.filter(toon => toon.status === 'rejected' && user.title.toUpperCase().includes(value))
-            displayWebToonz(fToonz);
-        }
-
-        if(wStatus === 'rejected'){
-            let fToonz = toonz.filter(toon => toon.status === 'rejected' && user.title.toUpperCase().includes(value))
-            displayWebToonz(fToonz);
-        }
-    }
-
-
-    async function ans(id, status){
-        if(isLoading) return;
-        isLoading = true
-        try {
-            let res = await fetch('/twp/admin/webtoon/updatestatus', {
-                method: 'PUT',
-                body: JSON.stringify({status, id}),
-                headers:{'Content-Type': 'application/json'}
-            });
-
-            let data = await res.json();
-
-            let {E,toons} = data;
-
-            if(E) displayError(E);
-            if(toons){
-                toonz = toons;
-                displayWebToonz(toons) 
-            }
-        } catch (error) {
-            displayError(error.message)
-        } 
-        finally{
-            isLoading = false;
-        }
-    }
-
-    function displayError(err){
-        const popMessage = document.querySelector('.pop-message');
-        let messageHead = document.querySelector('.meassage-head');
-        const messageTick = document.querySelector('.tick');
-        const messageMessage = document.querySelector('.p-message');
-        let isError = false;
-        let errorColor = 'red';
-        let errorIcon = '&times;';
-
-        messageHead.innerHTML = 'Error!!';
-        messageMessage.innerHTML = err;
-        messageTick.innerHTML = errorIcon;
-        messageTick.style.color = errorColor;
-        isError = true;
-        popMessage.style.display = 'block';
-    }
-
-    function displaySuccess(M){
-        const popMessage = document.querySelector('.pop-message');
-        const messageMessage = document.querySelector('.p-message');
-
-        popMessage.style.display = 'block';
-        messageMessage.innerHTML = M;
-    }
-
-    const closeMessage = () => {
-        const popMessage = document.querySelector('.pop-message');
-        popMessage.style.display = 'none'
-    }
-</script>
+    
+    this.setCalls((prev) => {
+        const updated = new Map(prev);
+        updated.set(remoteuserid, { ...call });
+        return updated;
+    });
+    
+    
+    now time to animate the component using framer i want the component to open from the bottom left corner let it grow from the bottom left to expand the entire with of the screen and left it have this fluid motion
+    
+    putting the entire call states in an object
+    and putting the app settings in an object too which includes the theme, ringing tune, 
