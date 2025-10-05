@@ -39,9 +39,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(fileuploader({useTempFiles: true}));
 
-// if(!fs.existsSync('public/webtoonz')) fs.mkdirSync('public/webtoonz');
-
-
 app.get('*', tokenChecker)
 
 app.get('/', (req,res)=>{ res.redirect('/twp') });
@@ -52,10 +49,10 @@ app.use('/twp/auth', authRoute);
 
 app.use('/twp/admin', adminRoute);
 
-app.use('/twp/webtoon', toonRoute)
+app.use('/twp/webtoon', toonRoute);
 
-app.use((req,res,next) => { 
-    res.render('404', {user: res.locals.user, title: '404 Page'}) 
+app.use((req,res) => { 
+    res.status(404).send("sorry can't find your endpoint")
 })
 
 app.listen(port, "0.0.0.0", () => {

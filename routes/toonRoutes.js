@@ -2,55 +2,33 @@ import { Router } from "express";
 import Toonz from "../model/webtoonz.js";
 import Episode from "../model/episode.js";
 import {
-  authPage,
   authRoute,
   uploadEp,
   localSeriesUpload,
   dltEp,
-  authUser,
 } from "../middlewares/tokencheckers.js";
 import Comment from "../model/comments.js";
 import User from "../model/users.js";
 import { deleteFileFromFtp } from "../middlewares/ftpupload.js";
-import Scripture from "../model/scripture.js";
 
 const router = Router();
 
-router.get("/upload", authPage, (req, res) => {
-  let message =
-    "Please, in this page you will upload the details of your webtoon and then in the second page you will upload a single chapter of your work for review and please do not close this page until the end of the whole process";
-  res.render("seriesUpload", { title: "Series Upload", message });
-});
-
-// get page toonz
+// get toons 20 at a time
 router.get("/", async (req, res) => {
-  res.render("list", {
-    title: "Webtoonz",
-    description:
-      "Explore a vast collection of engaging webtoons on The Webtoon Project. Immerse yourself in captivating stories and unique artwork. Start reading now!",
-  });
-});
+  let page = parseInt(req.query.page) || 1;
+  let limit = parseInt(req.query.limit) || 20;
+  let skip = (page - 1) * limit;
+  let total = await Toonz.countDocuments({ status: "approved" });
+  let pages = Math.ceil(total / limit);
 
-// get toonz
-router.get("/fetchtoons", authUser, async (req, res) => {
-  let { type } = req.query;
-  let user = req.user;
-  let toonz =
-    type === "twporiginal"
-      ? await Toonz.find({ twporiginal: true, status: "approved" })
-      : await Toonz.find({ status: "approved" });
-  let episodes =
-    type === "twporiginal"
-      ? await Episode.find({ twporiginal: true, isToonVerified: true })
-      : await Episode.find({ isToonVerified: true });
-  let scriptures = await Scripture.find();
-  let comments = await Comment.find();
+  let toonz = await Toonz.find({ status: "approved" })
+    .sort({ releaseDate: -1 })
+    .skip(skip)
+    .limit(limit);
+
   res.json({
     toonz,
-    episodes,
-    comments,
-    user: user ? user : null,
-    scriptures,
+    pages,
   });
 });
 
@@ -84,21 +62,19 @@ router.post("/", authRoute, async (req, res) => {
       twporiginal: type.includes("admin") ? true : false,
     });
     let user = await User.findByIdAndUpdate(id, { isAuthor: true });
-    return res
-      .status(201)
-      .json({
-        M: "file uploaded succesful",
-        toonzId: isToonz.id,
-        user: {
-          name: user.name,
-          type: user.type,
-          email: user.email,
-          favourites: user.favourites,
-          isAuthor: user.isAuthor,
-          subcriptions: user.subcriptions,
-          _id: user._id,
-        },
-      });
+    return res.status(201).json({
+      M: "file uploaded succesful",
+      toonzId: isToonz.id,
+      user: {
+        name: user.name,
+        type: user.type,
+        email: user.email,
+        favourites: user.favourites,
+        isAuthor: user.isAuthor,
+        subcriptions: user.subcriptions,
+        _id: user._id,
+      },
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ E: err.message });
@@ -107,44 +83,24 @@ router.post("/", authRoute, async (req, res) => {
 
 // get single toon
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; 
   if (!id) res.sendStatus(400);
 
   try {
-    const toon = await Toonz.findById(id);
-    if (!toon) throw Error("to toon found with this id");
-    const episodes = await Episode.find({ _id: { $in: toon.chapters } });
-    let comments = await Comment.find({ _id: { $in: toon.comments } });
-    res.json({ toon, episodes, comments });
-    // res.render('item', {title: toon.title ,toon, episodes, comments, description: toon.description});
+    const toon = await Toonz.findById(id)
+      .populate("comments")
+      .populate("chapters");
+
+    if (!toon) res.status(404).json({ E: "webtoon not found" });
+
+    res.json({ toon });
   } catch (err) {
-    // res.render('404', {user: res.locals.user, title: '404 Page'})
-    res.status(404).json({ E: err.message });
+    console.log(err);
+    res.status(500).json({ E: err.message });
   }
 });
 
 // update toonz
-// router.put('/sub/:id', authRoute, async (req, res) => {
-//     let toonId = req.params.id;
-//     let { id } = req.user
-//     const user = await User.findById(id);
-//     let toon = await Toonz.findById(toonId);
-//     if(!toon) return res.sendStatus(404);
-
-//     if(!user.subcriptions.includes(toonId)){
-//         await user.updateOne({$push: {subcriptions: toonId}})
-//         toon.subscription += 1;
-//         await toon.save();
-//         return res.status(200).json({M: 'subscribed', subs: toon.subscription})
-//     }
-
-//     await user.updateOne({$pull: {subcriptions: toonId}});
-//     if(toon.subscription > 0){
-//         toon.subscription -= 1
-//         await toon.save();
-//     };
-//     res.status(200).json({M: 'unsubcribed', subs: toon.subscription})
-// })
 router.put("/like/:id", authRoute, async (req, res) => {
   let toonId = req.params.id;
   let { id } = req.user;
@@ -248,26 +204,18 @@ router.delete("/comment/:id", authRoute, async (req, res) => {
 });
 
 /****************** episodes routes *********************/
-router.get("/episode/upload", authPage, (req, res) => {
-  res.render("userEpisodeForm", { title: "Episode Upload" });
-});
-
 // get an episode
 router.get("/episode/:id", async (req, res) => {
   let id = req.params.id;
   try {
-    const ep = await Episode.findById(id);
-    let toon = await Toonz.findOne({ chapters: id });
-    if (!toon || !ep) throw new Error("file is missing");
-    res.render("read", {
-      title: "Read",
-      pg: ep.pages,
-      toon,
-      description: `${ep.title} is an episode/chapter from the ${toon.title} webtoon`,
-      ep,
-    });
+    let toons = await Toonz.findOne({ chapters: id })
+      .select("title _id")
+      .populate("comments")
+      .populate("chapters");
+    if (!toons) res.status(404).json({ E: "webtoon not found" });
+    res.json({ toons });
   } catch (err) {
-    res.render("404", { user: res.locals.user, title: "404 Page" });
+    console.log(err.message);
   }
 });
 
@@ -317,14 +265,12 @@ router.post("/episode", authRoute, async (req, res) => {
     await toon.updateOne({ $push: { chapters: ep.id } });
 
     if (toon.status === "pending") {
-      return res
-        .status(200)
-        .json({
-          M: `Episode uploaded successfully!!🎉🎉. \n Thank You For uploading Your Webtoon. Your webtoon is under review, Please note that this may take up to 3 to 4 working days and You will be notified if it is approved`,
-        });
+      return res.status(200).json({
+        M: `Episode uploaded successfully!!🎉🎉. \n Thank You For uploading Your Webtoon. Your webtoon is under review, Please note that this may take up to 3 to 4 working days and You will be notified if it is approved`,
+      });
     } else {
       // function to send an email to subcribed users to update them on the new episode
-      
+
       return res.status(200).json({ M: "Episode uploaded successfully!!🎉🎉" });
     }
   } catch (err) {

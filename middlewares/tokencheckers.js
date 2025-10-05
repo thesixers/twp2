@@ -140,7 +140,6 @@ export function calculateAge(dob){
 
     return [age, months]; 
 }
- 
 
 /*this is a fresh script for the new twp server middleware*/
 export function authRoute(req,res,next){
@@ -156,24 +155,6 @@ export function authRoute(req,res,next){
             return res.status(403).json({E: 'ur account has been banned'})
         }
         req.user = {id: user.id, type: user.type}
-        console.log("user checked successfully 👍🏾");
-        next()
-    })
-}
-
-export function authPage(req,res,next){
-    let token = req.cookies.twpAccount
-    if(!token) return res.redirect('/twp');
-
-    jwt.verify(token, JWT_SECRET, async (err, decodedToken) => {
-        if(err) return res.redirect('/twp');
-        let user = await User.findById(decodedToken.id)
-        if(!user) return res.redirect('/twp');
-        if(user.status === 'banned'){
-            res.cookie('twpAccount', '', {httpOnly: true, maxAge: 1});
-           return res.redirect('/twp')
-        }
-        req.user = user 
         next()
     })
 }

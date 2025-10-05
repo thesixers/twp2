@@ -1,22 +1,21 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
-const {EMAIL_USER,EMAIL_PASS} = process.env;
+const { EMAIL_USER, EMAIL_PASS } = process.env;
 
+export const sendEmails = (user) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
 
-export const sendEmails = (user) =>{
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth:{
-            user: EMAIL_USER,
-            pass: EMAIL_PASS,
-        }
-    });
-
-    const mail = {
-        from: EMAIL_USER,
-        to: user.email,
-        subject: 'TWP OTP verification',
-        html: `<!DOCTYPE html>
+  const mail = {
+    from: EMAIL_USER,
+    to: user.email,
+    subject: "TWP OTP verification",
+    html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -71,7 +70,9 @@ export const sendEmails = (user) =>{
             text-align: center;
             margin-top: 40px;
             ">
-                <a href="https://twp2.onrender.com/twp/auth/emailverify/${user.id}">
+                <a href="https://twp2.onrender.com/twp/auth/emailverify/${
+                  user.id
+                }">
                 <button style="
                     text-decoration: none;
                     border: none;
@@ -110,34 +111,32 @@ export const sendEmails = (user) =>{
         </div>
     </div>
 </body>
-</html>`
+</html>`,
+  };
+
+  transporter.sendMail(mail, (error, info) => {
+    if (error) {
+      return "Error sending email:", error;
     }
 
+    return "Email sent:", info.response;
+  });
+};
 
-    transporter.sendMail(mail, (error, info) => {
-        if (error) {
-            return 'Error sending email:', error;
-        }
-        
-        return 'Email sent:', info.response;
-    });
-}
+export const Emails = (user, message, reason) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
 
-export const Emails = (user, message) =>{
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth:{
-            user: EMAIL_USER,
-            pass: EMAIL_PASS,
-        }
-    });
-
-
-    const mail = {
-        from: EMAIL_USER,
-        to: user.email,
-        subject: 'Webtoon Approval',
-        html: `<!DOCTYPE html>
+  const mail = {
+    from: EMAIL_USER,
+    to: user.email,
+    subject: "Webtoon Approval",
+    html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -182,7 +181,7 @@ export const Emails = (user, message) =>{
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             line-height: 30px;
         ">
-            <h2>Email verification</h2>
+            <h2>Webtoons Approval</h2>
             <div>Hi ${user.name.split(" ")[0]}</div>
             <div>
                 ${message}
@@ -211,33 +210,32 @@ export const Emails = (user, message) =>{
         </div>
     </div>
 </body>
-</html>`
+</html>`,
+  };
+
+  transporter.sendMail(mail, (error, info) => {
+    if (error) {
+      return "Error sending email:", error;
     }
 
+    return "Email sent:", info.response;
+  });
+};
 
-    transporter.sendMail(mail, (error, info) => {
-        if (error) {
-            return 'Error sending email:', error;
-        }
-        
-        return 'Email sent:', info.response;
-    });
-}
+export const otpMail = (user, otp) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
 
-export const otpMail = (user, otp) =>{
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth:{
-            user: EMAIL_USER,
-            pass: EMAIL_PASS,
-        }
-    });
-
-    const mail = {
-        from: EMAIL_USER,
-        to: user.email,
-        subject: 'Password Recovery',
-        html: `<!DOCTYPE html>
+  const mail = {
+    from: EMAIL_USER,
+    to: user.email,
+    subject: "Password Recovery",
+    html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -323,34 +321,32 @@ export const otpMail = (user, otp) =>{
         </div>
     </div>
 </body>
-</html>`
+</html>`,
+  };
+
+  transporter.sendMail(mail, (error, info) => {
+    if (error) {
+      return "Error sending email:", error;
     }
 
+    return "Email sent:", info.response;
+  });
+};
 
-    transporter.sendMail(mail, (error, info) => {
-        if (error) {
-            return 'Error sending email:', error;
-        }
-        
-        return 'Email sent:', info.response;
-    });
-}
+export const sendReply = (user, reply) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
 
-export const sendReply = (user, reply) =>{
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth:{
-            user: EMAIL_USER,
-            pass: EMAIL_PASS,
-        }
-    });
-
-    
-    const mail = {
-        from: EMAIL_USER,
-        to: user.email,
-        subject: 'Twp Reply',
-        html: `<!DOCTYPE html>
+  const mail = {
+    from: EMAIL_USER,
+    to: user.email,
+    subject: "Twp Reply",
+    html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -401,7 +397,9 @@ export const sendReply = (user, reply) =>{
                 <div class="message" style="
                 text-align: center;
                 padding: 10px;
-                ">We recieved your message/feedback stating that <span style="color: #e44616; font-style: italic;">"${user.message}"</span>.
+                ">We recieved your message/feedback stating that <span style="color: #e44616; font-style: italic;">"${
+                  user.message
+                }"</span>.
                 <div style="text-align: left;">${reply}</div></div>
                 
             </div>
@@ -431,15 +429,14 @@ export const sendReply = (user, reply) =>{
         </div>
     </div>
 </body>
-</html>`
+</html>`,
+  };
+
+  transporter.sendMail(mail, (error, info) => {
+    if (error) {
+      return "Error sending email:", error;
     }
 
-
-    transporter.sendMail(mail, (error, info) => {
-        if (error) {
-            return 'Error sending email:', error;
-        }
-        
-        return 'Email sent:', info.response;
-    });
-}
+    return "Email sent:", info.response;
+  });
+};

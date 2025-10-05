@@ -1,31 +1,30 @@
-import express from 'express';
-import { emailverify_get, forgotpassword_get, forgotpassword_post, login_get, login_post, logout, otp_post, otpverify_get, resetpassword_get, resetpassword_post, signup_get, signup_post } from '../controllers/authController.js';
+import express from "express";
+import {
+  emailverify_get,
+  forgotpassword_post,
+  google_auth,
+  login_post,
+  logout,
+  otp_post,
+  resetpassword_post,
+  signup_post,
+} from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.get('/login', login_get);
+router.get("/emailverify/:id", emailverify_get);
 
-router.get('/signup', signup_get );
+router.get("/logout", logout);
 
-router.get('/forgotpassword', forgotpassword_get)
+router.post("/signup", signup_post);
 
-router.get('/otpkvpsjnrmwkmwoomw', otpverify_get)
+router.post("/google-auth", google_auth);
 
-router.get('/resetpassword', resetpassword_get )
+router.post("/login", login_post);
 
-router.get('/emailverify/:id', emailverify_get);
+router.post("/sendotp", forgotpassword_post);
 
-router.get('/logout', logout);
+router.post("/otp", otp_post);
 
-router.post('/signup', signup_post);
-
-router.post('/login', login_post);
-
-router.post('/sendotp', forgotpassword_post);
-
-router.post('/otp', otp_post);
-
-router.put('/resetpassword', resetpassword_post);
-
- 
+router.put("/resetpassword", resetpassword_post);
 export default router;

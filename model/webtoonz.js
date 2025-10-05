@@ -28,7 +28,8 @@ const newToonz = new Schema({
         type: String
     },
     chapters:{
-        type: Array
+        type: Array,
+        ref: 'episode'
     },
     releaseDate:{
         type: String
@@ -58,6 +59,7 @@ const newToonz = new Schema({
     },
     comments: {
         type: Array,
+        ref: 'comment'
     }
 });
 

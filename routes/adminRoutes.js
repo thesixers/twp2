@@ -1,5 +1,5 @@
 import express from 'express';
-import { authPage, authRoute } from '../middlewares/tokencheckers.js';
+import { authRoute } from '../middlewares/tokencheckers.js';
 import { 
     BN_post,
     home_get,
@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', authPage, home_get);
+router.get('/', authRoute, home_get);
 
 router.put('/updatetoon', authRoute, RA_post);
 

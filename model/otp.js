@@ -1,6 +1,4 @@
 import { Schema, model } from "mongoose";
-import { isEmail, isName, isPassword } from "../middlewares/formcheckers.js";
-import bcrypt from 'bcrypt'
 
 const newOTP = new Schema({
     email:{

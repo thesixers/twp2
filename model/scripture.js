@@ -1,4 +1,4 @@
-import {mongoose, model, Schema} from "mongoose";
+import { model, Schema } from "mongoose";
 
 const new_Scripture = new Schema({
     book:{ type: String, required: [true, 'Please enter a book in the bible']},
