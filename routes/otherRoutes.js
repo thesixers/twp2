@@ -12,9 +12,9 @@ const router = express.Router();
 
 router.get('/', slash_get);
 
-router.get('/me', authUser, get_me);
-
 router.get('/home', home_get);
+
+router.get('/home/me', authUser, get_me);
 
 router.get('/author', authRoute, author_get);
 
