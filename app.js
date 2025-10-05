@@ -26,7 +26,7 @@ connect(MONGO_URI)
 });
 
 app.use(cors({
-    origin: ['https://thewebtoonproject.com', "http://localhost:3000", "https://twp-vite.onrender.com"],
+    origin: ['https://thewebtoonproject.com', "https://twp-vite.onrender.com"],
     credentials: true
 })) 
 
