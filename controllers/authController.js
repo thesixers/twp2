@@ -14,26 +14,6 @@ const clientID =
   "222580688721-1rdmd4tadv6reuad2s2nsad5krm635kq.apps.googleusercontent.com";
 const client = new OAuth2Client(clientID);
 
-export const login_get = (req, res) => {
-  res.render("login", { title: "Login", description: "twps login page " });
-};
-
-export const signup_get = (req, res) => {
-  res.render("signup", { title: "Signup", description: "twps signup page " });
-};
-
-export const forgotpassword_get = (req, res) => {
-  res.render("passemail");
-};
-
-export const otpverify_get = (req, res) => {
-  res.render("otp");
-};
-
-export const resetpassword_get = (req, res) => {
-  res.render("resetpassword");
-};
-
 export const emailverify_get = async (req, res) => {
   let id = req.params.id;
 
@@ -117,7 +97,7 @@ export const google_auth = async (req, res) => {
       maxAge: time,
     });
 
-    return res.status(200).json({ M: "Login Successful !!!" });
+    return res.status(200).json({ M: "Login Successful !!!", user: {...user._doc, password: "pwd"} });
   } catch (error) {
     return res
       .status(500)
@@ -140,7 +120,7 @@ export const login_post = async (req, res) => {
       maxAge: time,
     });
 
-    res.status(200).json({ M: "Login Successful !!!" });
+    res.status(200).json({ M: "Login Successful !!!", user: {...user._doc, password: "pwd"} });
   } catch (err) {
     let errors = errHandler(err);
     if (errors.email) {

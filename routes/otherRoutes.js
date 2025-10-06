@@ -14,9 +14,9 @@ router.get('/', slash_get);
 
 router.get('/home', home_get);
 
-router.get('/home/me', authUser, get_me);
+router.get('/me', authUser, get_me);
 
-router.get('/author', authRoute, author_get);
+router.get('/author', authUser, author_get);
 
 router.post('/complain', complaint_post);
  

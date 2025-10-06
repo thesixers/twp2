@@ -8,16 +8,16 @@ export const slash_get = (req, res) => res.redirect("/twp/home");
 export const get_me = (req, res) => {
   if (!req.user) return res.status(401).json({ E: "Not authorized" });
   res.json({ user: req.user });
-}
+};
 
 export const home_get = async (req, res) => {
   const newToonsNo = req.query.nwebtoons;
   const trendingToonsNo = req.query.twebtoons;
   const episodesNo = req.query.episodes;
 
-  const nWebtoons = await Toonz.find({status: "approved"}).limit(newToonsNo);
+  const nWebtoons = await Toonz.find({ status: "approved" }).limit(newToonsNo);
 
-  const tWebtoons = await Toonz.find({status: "approved"})
+  const tWebtoons = await Toonz.find({ status: "approved" })
     .sort({ likes: -1 })
     .limit(trendingToonsNo);
 
@@ -31,10 +31,15 @@ export const home_get = async (req, res) => {
 };
 
 export const author_get = async (req, res) => {
-  if (!req.user.isAuthor) return res.redirect("/twp");
-  let toonz = await Toonz.find({ uploadAcc: req.user.id });
-  return res.json({ webtoons: toonz });
-  // res.render('author', { toonz, description: "The twp authors page"})
+  try {
+    if (!req.user) return res.status(401).json({ E: "Not authorized" });
+    if (!req.user.isAuthor) return res.status(403).json({ E: "Not an author" });
+    let toonz = await Toonz.find({ uploadAcc: req.user._id });
+    return res.json({ webtoons: toonz });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ E: error.message });
+  }
 };
 
 function formatDate(date) {
